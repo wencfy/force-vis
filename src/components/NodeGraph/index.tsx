@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import G6, {Graph, GraphData, ModelConfig} from "@antv/g6";
 import {DashboardPanel, graphDataLoader, judge} from "../../utils";
 import {theme} from "antd";
@@ -19,17 +19,26 @@ const NodeGraph: React.FC<DashboardPanel> = (
     },
   }
 ) => {
+  console.log('NodeGraph() called');
   const ref = React.useRef<HTMLDivElement>(null);
-  const token = theme.useToken().token;
+  const {token} = theme.useToken();
 
   const graph = React.useRef<Graph | null>(null);
 
-  const defaultModel: ModelConfig = {
-    size: 10,
-    style: {
-      fill: token.colorPrimaryBg
+  const [defaultNodeModel, defaultEdgeModel] = useMemo<[ModelConfig, ModelConfig]>(() => ([
+    {
+      size: 10,
+      style: {
+        fill: token.colorInfoBgHover,
+        stroke: token.colorInfoBorderHover
+      }
+    },
+    {
+      style: {
+        stroke: token.colorBorder
+      }
     }
-  }
+  ]), [token.colorInfoBgHover, token.colorInfoBorderHover]);
 
   useEffect(() => {
     if (!graph.current) {
@@ -50,7 +59,9 @@ const NodeGraph: React.FC<DashboardPanel> = (
           alphaMin: 0.001,
           alpha: 0.3,
         },
-        defaultNode: defaultModel,
+        defaultNode: {
+          size: 10,
+        },
         modes: {
           default: ['zoom-canvas', 'drag-canvas']
         },
@@ -90,14 +101,17 @@ const NodeGraph: React.FC<DashboardPanel> = (
 
   useEffect(() => {
     const nodes = graph.current?.getNodes();
-    console.log(key, rules)
+    console.log(key, rules, defaultNodeModel)
     nodes?.forEach(node => {
+      let set: boolean = false;
+
       rules.forEach(rule => {
         if (rule?.fieldName === key) {
           // field name is id
-          console.log(node)
-          if (judge(rule.type, node._cfg?.model?.id, rule.value)) {
-            graph.current?.updateItem(node.getID(), {
+          if (judge(rule.type, node.getID(), rule.value)) {
+            console.log(node)
+            set = true;
+            node.update({
               ...node._cfg?.model,
               style: {
                 ...node._cfg?.model?.style,
@@ -109,8 +123,16 @@ const NodeGraph: React.FC<DashboardPanel> = (
 
         }
       });
+
+      if (!set) {
+        node.update({...defaultNodeModel});
+      }
     });
-  }, [key, rules]);
+    console.log(defaultEdgeModel)
+    graph.current?.getEdges().forEach(edge => {
+      edge.update({...defaultEdgeModel});
+    });
+  }, [defaultNodeModel, defaultEdgeModel, key, rules]);
 
   return (
     <div ref={ref} style={{height: '100%'}}>
