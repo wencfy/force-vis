@@ -1,0 +1,67 @@
+{
+  "000000011": {
+    "status": 0,
+    "data": {
+      "dashboard": {
+        "panels": [
+          {
+            "gridPos": {
+              "h": 5,
+              "w": 5,
+              "x": 0,
+              "y": 0
+            },
+            "id": "1",
+            "panelOptions": {
+              "datasource": "00000001",
+              "type": "nodeGraph",
+              "title": "Network Graph"
+            },
+            "nodeOptions": {
+              "rules": [
+                {
+                  "fieldName": "name",
+                  "value": "6652258.com",
+                  "type": "EQ",
+                  "config": {
+                    "lColor": "#aabbcc"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "gridPos": {
+              "h": 5,
+              "w": 5,
+              "x": 5,
+              "y": 0
+            },
+            "id": "2",
+            "panelOptions": {
+              "datasource": "00000001",
+              "type": "nodeGraph",
+              "title": "Panel Title"
+            },
+            "nodeOptions": {
+              "rules": [
+                {
+                  "fieldName": "name",
+                  "value": "6652258.com",
+                  "type": "EQ",
+                  "config": {
+                    "lColor": "#aabbcc"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "uid": "000000011",
+        "title": "Graphite Carbon Metrics"
+      },
+      "meta": {
+      }
+    }
+  }
+}

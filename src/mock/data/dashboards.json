@@ -1,0 +1,521 @@
+{
+  "status": 0,
+  "data": {
+    "schema": {
+      "name": "Query results",
+      "meta": {
+        "count": 768,
+        "locationInfo": {
+          "KbH7u4Pmz": {
+            "name": "Data source: Influx DB",
+            "kind": "folder",
+            "url": "/dashboards/f/KbH7u4Pmz/data-source-influx-db"
+          },
+          "PGJ1Fr4Zz": {
+            "name": "Demos",
+            "kind": "folder",
+            "url": "/dashboards/f/PGJ1Fr4Zz/demos"
+          },
+          "bU3muVPmz": {
+            "name": "Data source: Graphite",
+            "kind": "folder",
+            "url": "/dashboards/f/bU3muVPmz/data-source-graphite"
+          },
+          "dFRSXVEiz": {
+            "name": "Data source: Prometheus",
+            "kind": "folder",
+            "url": "/dashboards/f/dFRSXVEiz/data-source-prometheus"
+          },
+          "pfwR7veGk": {
+            "name": "Visualizations",
+            "kind": "folder",
+            "url": "/dashboards/f/pfwR7veGk/visualizations"
+          },
+          "z6MMXVEmz": {
+            "name": "Data source: Elasticsearch",
+            "kind": "folder",
+            "url": "/dashboards/f/z6MMXVEmz/data-source-elasticsearch"
+          }
+        }
+      },
+      "fields": [
+        {
+          "name": "kind",
+          "type": "string",
+          "typeInfo": {
+            "frame": "string"
+          }
+        },
+        {
+          "name": "uid",
+          "type": "string",
+          "typeInfo": {
+            "frame": "string"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "typeInfo": {
+            "frame": "string"
+          }
+        },
+        {
+          "name": "url",
+          "type": "string",
+          "typeInfo": {
+            "frame": "string"
+          },
+          "config": {
+            "links": [
+              {
+                "title": "link",
+                "url": "${__value.text}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tags",
+          "type": "other",
+          "typeInfo": {
+            "frame": "json.RawMessage",
+            "nullable": true
+          }
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "typeInfo": {
+            "frame": "string"
+          }
+        }
+      ]
+    },
+    "values": [
+      [
+        "folder",
+        "bU3muVPmz",
+        "Data source: Graphite",
+        "/dashboards/f/bU3muVPmz/data-source-graphite",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "z6MMXVEmz",
+        "Data source: Elasticsearch",
+        "/dashboards/f/z6MMXVEmz/data-source-elasticsearch",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "NUrBVPWmz",
+        "zTest",
+        "/dashboards/f/NUrBVPWmz/ztest",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "BS9Gl4Emk",
+        "What's new",
+        "/dashboards/f/BS9Gl4Emk/whats-new",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "KbH7u4Pmz",
+        "Data source: Influx DB",
+        "/dashboards/f/KbH7u4Pmz/data-source-influx-db",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "dFRSXVEiz",
+        "Data source: Prometheus",
+        "/dashboards/f/dFRSXVEiz/data-source-prometheus",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "PGJ1Fr4Zz",
+        "Demos",
+        "/dashboards/f/PGJ1Fr4Zz/demos",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "bu1lvdEWz",
+        "Grafana Stats",
+        "/dashboards/f/bu1lvdEWz/grafana-stats",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "yIhcIRjZz",
+        "Visualization: Flowchart",
+        "/dashboards/f/yIhcIRjZz/visualization-flowchart",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "aHQe8pkGk",
+        "Data source: Google Sheets",
+        "/dashboards/f/aHQe8pkGk/data-source-google-sheets",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "oi0n6B0Mz",
+        "Data source: AWS IoT Sitewise",
+        "/dashboards/f/oi0n6B0Mz/data-source-aws-iot-sitewise",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "pfwR7veGk",
+        "Visualizations",
+        "/dashboards/f/pfwR7veGk/visualizations",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "z55YRceMz",
+        "Useful panels",
+        "/dashboards/f/z55YRceMz/useful-panels",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "8OticeRnk",
+        "Replicating issues",
+        "/dashboards/f/8OticeRnk/replicating-issues",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "-Ybx2UMnk",
+        "Product",
+        "/dashboards/f/-Ybx2UMnk/product",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "EVO2J4Hnz",
+        "Data source: Loki",
+        "/dashboards/f/EVO2J4Hnz/data-source-loki",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "rGgObQt7k",
+        "App: AWS IoT TwinMaker",
+        "/dashboards/f/rGgObQt7k/app-aws-iot-twinmaker",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "C3t02jp7z",
+        "User Essentials Repeat E2E",
+        "/dashboards/f/C3t02jp7z/user-essentials-repeat-e2e",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "tOFItmonk",
+        "GrafanaCloud",
+        "/dashboards/f/tOFItmonk/grafanacloud",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "integration---kubernetes",
+        "Integration - Kubernetes",
+        "/dashboards/f/integration---kubernetes/integration-kubernetes",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "Z1IigyAnk",
+        "z Community Support",
+        "/dashboards/f/Z1IigyAnk/z-community-support",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "integration---caddy",
+        "Integration - Caddy",
+        "/dashboards/f/integration---caddy/integration-caddy",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "a8WedIf7z",
+        "Test123",
+        "/dashboards/f/a8WedIf7z/test123",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "N7hOGTP7z",
+        "rGrafana",
+        "/dashboards/f/N7hOGTP7z/rgrafana",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "M658Xts7z",
+        "Business Intelligence",
+        "/dashboards/f/M658Xts7z/business-intelligence",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "uU9eqxsnz",
+        "Doom",
+        "/dashboards/f/uU9eqxsnz/doom",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "2EvL7P9nk",
+        "play 2.0",
+        "/dashboards/f/2EvL7P9nk/play-2-0",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "TQaXSqenk",
+        "Synthetic Monitoring",
+        "/dashboards/f/TQaXSqenk/synthetic-monitoring",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "oGiTLSm4z",
+        "sample",
+        "/dashboards/f/oGiTLSm4z/sample",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "5S7SntZVk",
+        "wow this is a really long folder name, way longer than should be allowed really and yet here we are optimising for really long folder names. i wonder what will happen?",
+        "/dashboards/f/5S7SntZVk/wow-this-is-a-really-long-folder-name-way-longer-than-should-be-allowed-really-and-yet-here-we-are-optimising-for-really-long-folder-names-i-wonder-what-will-happen",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "5FWp4TM4z",
+        "rm_example",
+        "/dashboards/f/5FWp4TM4z/rm_example",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "G1NGIANVk",
+        "DevEnv Dashboards",
+        "/dashboards/f/G1NGIANVk/devenv-dashboards",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "2NNsFbHVz",
+        "Data Plane",
+        "/dashboards/f/2NNsFbHVz/data-plane",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "dev-dashboards",
+        "dev-dashboards",
+        "/dashboards/f/dev-dashboards/dev-dashboards",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "QQTPJnF4z",
+        "Community",
+        "/dashboards/f/QQTPJnF4z/community",
+        null,
+        ""
+      ],
+      [
+        "folder",
+        "L0BuusT4k",
+        "Correlation Demo",
+        "/dashboards/f/L0BuusT4k/correlation-demo",
+        null,
+        ""
+      ],
+      [
+        "dashboard",
+        "000000003",
+        "Big Dashboard Small",
+        "/d/000000003/big-dashboard-small",
+        null,
+        "PGJ1Fr4Zz"
+      ],
+      [
+        "dashboard",
+        "000000010",
+        "Annotations",
+        "/d/000000010/annotations",
+        [
+          "annotations",
+          "demo",
+          "presentation"
+        ],
+        "PGJ1Fr4Zz"
+      ],
+      [
+        "dashboard",
+        "000000011",
+        "Graphite Carbon Metrics",
+        "/d/000000011/graphite-carbon-metrics",
+        [
+          "graphite",
+          "carbon"
+        ],
+        "bU3muVPmz"
+      ],
+      [
+        "dashboard",
+        "000000012",
+        "Grafana Play Home",
+        "/d/000000012/grafana-play-home",
+        [
+          "startpage",
+          "home",
+          "Home"
+        ],
+        "general"
+      ],
+      [
+        "dashboard",
+        "000000016",
+        "1 -  Time series graphs",
+        "/d/000000016/1-time-series-graphs",
+        [
+          "presentation",
+          "annotations",
+          "demo"
+        ],
+        "pfwR7veGk"
+      ],
+      [
+        "dashboard",
+        "000000019",
+        "Annotations",
+        "/d/000000019/annotations",
+        null,
+        "bU3muVPmz"
+      ],
+      [
+        "dashboard",
+        "000000022",
+        "Graphite panel repeats hidden",
+        "/d/000000022/graphite-panel-repeats-hidden",
+        null,
+        "bU3muVPmz"
+      ],
+      [
+        "dashboard",
+        "000000024",
+        "Templating value groups",
+        "/d/000000024/templating-value-groups",
+        null,
+        "PGJ1Fr4Zz"
+      ],
+      [
+        "dashboard",
+        "000000025",
+        "Templating, repeated panels",
+        "/d/000000025/templating-repeated-panels",
+        null,
+        "PGJ1Fr4Zz"
+      ],
+      [
+        "dashboard",
+        "000000028",
+        "InfluxDB Annotations",
+        "/d/000000028/influxdb-annotations",
+        null,
+        "KbH7u4Pmz"
+      ],
+      [
+        "dashboard",
+        "000000029",
+        "Prometheus - Demo Dashboard",
+        "/d/000000029/prometheus-demo-dashboard",
+        [
+          "prometheus",
+          "node",
+          "ds-example"
+        ],
+        "dFRSXVEiz"
+      ],
+      [
+        "dashboard",
+        "000000030",
+        "ElasticSearch - Custom Templated query",
+        "/d/000000030/elasticsearch-custom-templated-query",
+        [
+          "elasticsearch"
+        ],
+        "z6MMXVEmz"
+      ],
+      [
+        "dashboard",
+        "000000032",
+        "Grafana demo",
+        "/d/000000032/grafana-demo",
+        null,
+        "PGJ1Fr4Zz"
+      ],
+      [
+        "dashboard",
+        "000000036",
+        "Prometheus repeat",
+        "/d/000000036/prometheus-repeat",
+        [
+          "prometheus"
+        ],
+        "dFRSXVEiz"
+      ]
+    ]
+  }
+}
