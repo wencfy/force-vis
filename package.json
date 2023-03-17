@@ -28,7 +28,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "scp -r ./build root@124.222.0.153:/root",
-    "clean": "rm -rf /Users/wen/Developer/force-vis/build"
+    "clean": "rm -rf /Users/wen/Developer/force-vis/build",
+    "cz": "git cz"
   },
   "eslintConfig": {
     "extends": [
