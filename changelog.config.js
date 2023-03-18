@@ -49,7 +49,7 @@ module.exports = {
     },
     style: {
       description: 'Markup, white-space, formatting, missing semi-colons...',
-      emoji: '💄',
+      emoji: '🎨',
       value: 'style'
     },
     test: {
