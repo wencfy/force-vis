@@ -29,6 +29,7 @@ const ColorPicker: React.FC<ColorPickerProps> = function ({value, onChange}) {
         prefix={<ColorPrefix
           style={{borderRadius: 2, backgroundColor: hexColor}}
         />}
+        size='small'
         placeholder='input color'
         value={hexColor}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {

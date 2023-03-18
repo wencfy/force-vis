@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {Button, Col, Collapse, Form, Input, Select, Space} from "antd";
 import {CaretRightOutlined} from '@ant-design/icons';
-import {ControlBoardWrapper, EditViewWrapper} from "./style";
-import {DashboardPanel, deepClone} from "../../utils";
 import {Add, Delete, FilterAlt, Settings} from "@styled-icons/material-outlined";
+import {ControlBoardWrapper, EditViewWrapper, RuleWrapper} from "./style";
+import {DashboardPanel, deepClone} from "../../utils";
 import {ColorPicker, GridPanel, NodeGraph} from "../../components";
 
 const {Panel} = Collapse;
@@ -69,7 +69,7 @@ const EditView: React.FC<{
                     {(fields, {add, remove}) => (
                       <>
                         {fields.map((field, index) => {
-                          return <div key={field.key}>
+                          return <RuleWrapper key={field.key}>
                             <Space align="baseline">
                               <Form.Item>
                                 <FilterAlt size={18}/>
@@ -113,8 +113,12 @@ const EditView: React.FC<{
                                 name={[field.name, 'config', 'lColor']}>
                                 <ColorPicker />
                               </Form.Item>
+                              <Form.Item
+                                name={[field.name, 'config', 'dColor']}>
+                                <ColorPicker />
+                              </Form.Item>
                             </Space>
-                          </div>
+                          </RuleWrapper>
                         })}
                         <Form.Item>
                           <Button

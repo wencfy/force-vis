@@ -2,11 +2,11 @@ import styled from "styled-components";
 import {Input} from "antd";
 
 export const InputWrapper = styled(Input)`
-  padding: 4px;
-  width: fit-content;
+  padding: 0 3px;
+  width: 110px;
 `;
 
 export const ColorPrefix = styled.div`
-  width: 22px;
-  height: 100%;
+  width: 18px;
+  height: 18px;
 `;

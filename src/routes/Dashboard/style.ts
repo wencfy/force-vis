@@ -19,3 +19,13 @@ export const ControlBoardWrapper = styled(Card)`
     }
   }
 `;
+
+export const RuleWrapper = styled.div`
+  .ant-space {
+    .ant-space-item {
+      .ant-form-item {
+        margin-bottom: 0;
+      }
+    }
+  }
+`;
