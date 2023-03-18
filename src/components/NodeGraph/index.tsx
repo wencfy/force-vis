@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from "react";
+import React, {useEffect} from "react";
 import G6, {Graph, GraphData, ModelConfig} from "@antv/g6";
 import {DashboardPanel, graphDataLoader, judge} from "../../utils";
 import {theme} from "antd";
@@ -25,11 +25,11 @@ const NodeGraph: React.FC<DashboardPanel> = (
 
   const graph = React.useRef<Graph | null>(null);
 
-  const [defaultNodeModel, defaultEdgeModel] = useMemo<[ModelConfig, ModelConfig]>(() => ([
+  const [defaultNodeModel, defaultEdgeModel]: [ModelConfig, ModelConfig] = [
     {
       size: 10,
       style: {
-        fill: token.colorInfoBgHover,
+        fill: token.colorInfoBg,
         stroke: token.colorInfoBorderHover
       }
     },
@@ -38,7 +38,46 @@ const NodeGraph: React.FC<DashboardPanel> = (
         stroke: token.colorBorder
       }
     }
-  ]), [token.colorInfoBgHover, token.colorInfoBorderHover]);
+  ];
+
+  function applyRules() {
+    const nodes = graph.current?.getNodes();
+    nodes?.forEach(node => {
+      let set: boolean = false;
+
+      rules.forEach(rule => {
+        if (rule?.fieldName === key) {
+          // field name is id
+          if (judge(rule.type, node.getID(), rule.value)) {
+            console.log(node)
+            set = true;
+            node.update({
+              ...defaultNodeModel,
+              style: {
+                ...defaultNodeModel.style,
+                fill: rule.config.lColor
+              }
+            });
+          }
+        } else {
+
+        }
+      });
+
+      if (!set) {
+        node.update({...defaultNodeModel});
+      }
+    });
+    graph.current?.getEdges().forEach(edge => {
+      edge.update({...defaultEdgeModel});
+    });
+  }
+
+  useEffect(() => {
+    graph.current?.changeSize(ref.current?.clientWidth ?? 0, ref.current?.clientHeight ?? 0);
+  }, [w, h]);
+
+  useEffect(applyRules, [defaultNodeModel, defaultEdgeModel, key, rules]);
 
   useEffect(() => {
     if (!graph.current) {
@@ -59,9 +98,6 @@ const NodeGraph: React.FC<DashboardPanel> = (
           alphaMin: 0.001,
           alpha: 0.3,
         },
-        defaultNode: {
-          size: 10,
-        },
         modes: {
           default: ['zoom-canvas', 'drag-canvas']
         },
@@ -69,7 +105,7 @@ const NodeGraph: React.FC<DashboardPanel> = (
       });
     }
 
-    const time = 1;
+    const time = 3;
     graphDataLoader.getData(datasource).then(value => {
       const processedData: GraphData = {
         nodes: value.nodes.filter(node => {
@@ -91,48 +127,10 @@ const NodeGraph: React.FC<DashboardPanel> = (
 
       graph.current?.data(processedData);
       graph.current?.render();
+      applyRules();
       graph.current?.changeSize(ref.current?.clientWidth ?? 0, ref.current?.clientHeight ?? 0);
     });
   }, [key, datasource]);
-
-  useEffect(() => {
-    graph.current?.changeSize(ref.current?.clientWidth ?? 0, ref.current?.clientHeight ?? 0);
-  }, [w, h]);
-
-  useEffect(() => {
-    const nodes = graph.current?.getNodes();
-    console.log(key, rules, defaultNodeModel)
-    nodes?.forEach(node => {
-      let set: boolean = false;
-
-      rules.forEach(rule => {
-        if (rule?.fieldName === key) {
-          // field name is id
-          if (judge(rule.type, node.getID(), rule.value)) {
-            console.log(node)
-            set = true;
-            node.update({
-              ...node._cfg?.model,
-              style: {
-                ...node._cfg?.model?.style,
-                fill: rule.config.lColor
-              }
-            });
-          }
-        } else {
-
-        }
-      });
-
-      if (!set) {
-        node.update({...defaultNodeModel});
-      }
-    });
-    console.log(defaultEdgeModel)
-    graph.current?.getEdges().forEach(edge => {
-      edge.update({...defaultEdgeModel});
-    });
-  }, [defaultNodeModel, defaultEdgeModel, key, rules]);
 
   return (
     <div ref={ref} style={{height: '100%'}}>
