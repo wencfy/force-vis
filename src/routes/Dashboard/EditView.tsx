@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Button, Col, Collapse, Form, Input, Select, Space} from "antd";
 import {CaretRightOutlined} from '@ant-design/icons';
 import {Add, Delete, FilterAlt, Settings} from "@styled-icons/material-outlined";
-import {ControlBoardWrapper, EditViewWrapper, RuleWrapper} from "./style";
+import {ControlBoardWrapper, EditViewWrapper, FilterWrapper, RuleWrapper} from "./style";
 import {DashboardPanel, deepClone} from "../../utils";
 import {ColorPicker, GridPanel, NodeGraph} from "../../components";
 
@@ -70,59 +70,66 @@ const EditView: React.FC<{
                       <>
                         {fields.map((field, index) => {
                           return <RuleWrapper key={field.key}>
-                            <Space align="baseline">
-                              <Form.Item>
-                                <FilterAlt size={18}/>
-                              </Form.Item>
-                              <Form.Item
-                                name={[field.name, 'fieldName']}
+                            <FilterWrapper>
+                              <FilterAlt size={18}/>
+                              <Space.Compact
+                                direction="horizontal"
+                                size="small"
                               >
-                                <Input
-                                  size='small'
-                                  placeholder='field name'
-                                />
-                              </Form.Item>
-                              <Form.Item
-                                name={[field.name, 'type']}
-                              >
-                                <Select size='small' style={{width: 50}}>
-                                  {Object.keys(options).map(option => (
-                                    <Select.Option key={option} value={option}>
-                                      {options[option]}
-                                    </Select.Option>
-                                  ))}
-                                </Select>
-                              </Form.Item>
-                              <Form.Item
-                                name={[field.name, 'value']}
-                              >
-                                <Input size='small'/>
-                              </Form.Item>
-                              <Form.Item>
-                                <Button
-                                  type='text'
-                                  icon={<Delete size={18} onClick={() => remove(field.name)} />} />
-                              </Form.Item>
-                            </Space>
-                            <br/>
-                            <Space align="baseline">
+                                <Form.Item
+                                  name={[field.name, 'fieldName']}
+                                >
+                                  <Input
+                                    size='small'
+                                    placeholder='field name'
+                                  />
+                                </Form.Item>
+                                <Form.Item
+                                  name={[field.name, 'type']}
+                                >
+                                  <Select size='small' style={{width: 56}}>
+                                    {Object.keys(options).map(option => (
+                                      <Select.Option key={option} value={option}>
+                                        {options[option]}
+                                      </Select.Option>
+                                    ))}
+                                  </Select>
+                                </Form.Item>
+                                <Form.Item
+                                  name={[field.name, 'value']}
+                                >
+                                  <Input size='small'/>
+                                </Form.Item>
+                              </Space.Compact>
+                              <Button
+                                type='text'
+                                size="small"
+                                icon={<Delete size={18} onClick={() => remove(field.name)} />} />
+                            </FilterWrapper>
+                            <Space align="center">
                               <Form.Item>
                                 <Settings size={18} />
                               </Form.Item>
-                              <Form.Item
-                                name={[field.name, 'config', 'lColor']}>
-                                <ColorPicker />
-                              </Form.Item>
-                              <Form.Item
-                                name={[field.name, 'config', 'dColor']}>
-                                <ColorPicker />
-                              </Form.Item>
+
+                              <Space.Compact>
+                                <Form.Item
+                                  label='Fill Color'
+                                  name={[field.name, 'config', 'lColor']}>
+                                  <ColorPicker />
+                                </Form.Item>
+                                <Form.Item
+                                  label='Stroke Color'
+                                  name={[field.name, 'config', 'lStroke']}>
+                                  <ColorPicker />
+                                </Form.Item>
+                              </Space.Compact>
                             </Space>
                           </RuleWrapper>
                         })}
                         <Form.Item>
                           <Button
                             type="dashed"
+                            size="small"
                             onClick={() => add()}
                             block
                             icon={<Add size={18} style={{marginBottom: 3}}/>}

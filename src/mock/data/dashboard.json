@@ -24,8 +24,8 @@
                   "value": "6652258.com",
                   "type": "EQ",
                   "config": {
-                    "lColor": "#aabbcc",
-                    "dColor": "#223344"
+                    "lColor": "#fde2c8",
+                    "lStroke": "#ffaa39"
                   }
                 }
               ]

@@ -1,7 +1,18 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import {Button, Space, Tag, theme} from "antd";
 import G6, {Graph, GraphData, ModelConfig} from "@antv/g6";
+import {
+  Download,
+  FitScreen,
+  NavigateBefore, NavigateNext,
+  OneXMobiledata,
+  Timer,
+  ZoomIn,
+  ZoomOut
+} from "@styled-icons/material-outlined";
+import {SyncOutlined} from '@ant-design/icons';
 import {DashboardPanel, graphDataLoader, judge} from "../../utils";
-import {theme} from "antd";
+import {InfoWrapper, ViewControl} from "./style";
 
 const NodeGraph: React.FC<DashboardPanel> = (
   {
@@ -21,9 +32,10 @@ const NodeGraph: React.FC<DashboardPanel> = (
 ) => {
   console.log('NodeGraph() called');
   const ref = React.useRef<HTMLDivElement>(null);
-  const {token} = theme.useToken();
+  const {token, theme: {id: isDark}} = theme.useToken();
 
   const graph = React.useRef<Graph | null>(null);
+  const [timeUsage, setTimeUsage] = useState<number>(-1);
 
   const [defaultNodeModel, defaultEdgeModel]: [ModelConfig, ModelConfig] = [
     {
@@ -55,7 +67,8 @@ const NodeGraph: React.FC<DashboardPanel> = (
               ...defaultNodeModel,
               style: {
                 ...defaultNodeModel.style,
-                fill: rule.config.lColor
+                fill: rule.config.lColor,
+                stroke: rule.config.lStroke
               }
             });
           }
@@ -80,8 +93,8 @@ const NodeGraph: React.FC<DashboardPanel> = (
   useEffect(applyRules, [defaultNodeModel, defaultEdgeModel, key, rules]);
 
   useEffect(() => {
+    let startTime: number;
     if (!graph.current) {
-      const toolBar = new G6.ToolBar();
       graph.current = new G6.Graph({
         container: ref.current as HTMLDivElement,
         width: ref.current?.clientWidth,
@@ -97,11 +110,13 @@ const NodeGraph: React.FC<DashboardPanel> = (
           alphaDecay: 0.028,
           alphaMin: 0.001,
           alpha: 0.3,
+          onLayoutEnd: () => {
+            setTimeUsage(Date.now() - startTime);
+          }
         },
         modes: {
           default: ['zoom-canvas', 'drag-canvas']
         },
-        plugins: [toolBar],
       });
     }
 
@@ -126,6 +141,10 @@ const NodeGraph: React.FC<DashboardPanel> = (
       console.log(processedData)
 
       graph.current?.data(processedData);
+
+      startTime = Date.now();
+      setTimeUsage(-1);
+
       graph.current?.render();
       applyRules();
       graph.current?.changeSize(ref.current?.clientWidth ?? 0, ref.current?.clientHeight ?? 0);
@@ -134,6 +153,73 @@ const NodeGraph: React.FC<DashboardPanel> = (
 
   return (
     <div ref={ref} style={{height: '100%'}}>
+      <ViewControl>
+        <InfoWrapper>
+          {timeUsage === -1 ?
+            <Tag icon={<SyncOutlined spin/>} color="processing">
+              rendering
+            </Tag> :
+            <Tag icon={<Timer size={16}/>} color="success">
+              {timeUsage} ms
+            </Tag>}
+        </InfoWrapper>
+        <Space wrap>
+          <Button
+            size="small"
+            type="text"
+            icon={<ZoomIn size={18}/>}
+            onClick={() => {
+              graph.current?.zoom(1.1, graph.current?.getGraphCenterPoint());
+            }}
+          />
+          <Button
+            size="small"
+            type="text"
+            icon={<ZoomOut size={18}/>}
+            onClick={() => {
+              graph.current?.zoom(0.9, graph.current?.getGraphCenterPoint());
+            }}
+          />
+          <Button
+            size="small"
+            type="text"
+            icon={<FitScreen size={18}/>}
+            onClick={() => {
+              graph.current?.fitView();
+            }}
+          />
+          <Button
+            size="small"
+            type="text"
+            icon={<OneXMobiledata size={18}/>}
+            onClick={() => {
+              graph.current?.zoomTo(1, graph.current?.getGraphCenterPoint());
+            }}
+          />
+          <Button
+            size="small"
+            type="text"
+            icon={<Download size={18}/>}
+            onClick={() => {
+              graph.current?.downloadFullImage();
+            }}
+          />
+          <Button
+            size="small"
+            type="text"
+            icon={<NavigateBefore size={18}/>}
+            onClick={() => {
+            }}
+          />
+          <Button
+            size="small"
+            type="text"
+            icon={<NavigateNext size={18}/>}
+            onClick={() => {
+            }}
+          />
+        </Space>
+      </ViewControl>
     </div>
   )
 }

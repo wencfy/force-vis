@@ -30,7 +30,9 @@ export interface DashboardPanel {
       type: OptionEnum;
       config: {
         lColor: string;
+        lStroke: string;
         dColor: string;
+        dStroke: string;
       };
     }>;
   }
