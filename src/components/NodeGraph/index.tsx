@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Button, Space, Tag, theme} from "antd";
 import G6, {Graph, GraphData, ModelConfig} from "@antv/g6";
 import {
@@ -35,7 +35,10 @@ const NodeGraph: React.FC<DashboardPanel> = (
   const {token, theme: {id: isDark}} = theme.useToken();
 
   const graph = React.useRef<Graph | null>(null);
+  const startTime = React.useRef<number>(0);
   const [timeUsage, setTimeUsage] = useState<number>(-1);
+  const [time, setTime] = useState<number>(1);
+  const [timeRestriction, setTimeRestriction] = useState(Infinity);
 
   const [defaultNodeModel, defaultEdgeModel]: [ModelConfig, ModelConfig] = [
     {
@@ -93,7 +96,6 @@ const NodeGraph: React.FC<DashboardPanel> = (
   useEffect(applyRules, [defaultNodeModel, defaultEdgeModel, key, rules]);
 
   useEffect(() => {
-    let startTime: number;
     if (!graph.current) {
       graph.current = new G6.Graph({
         container: ref.current as HTMLDivElement,
@@ -111,7 +113,7 @@ const NodeGraph: React.FC<DashboardPanel> = (
           alphaMin: 0.001,
           alpha: 0.3,
           onLayoutEnd: () => {
-            setTimeUsage(Date.now() - startTime);
+            setTimeUsage(Date.now() - startTime.current);
           }
         },
         modes: {
@@ -120,8 +122,13 @@ const NodeGraph: React.FC<DashboardPanel> = (
       });
     }
 
-    const time = 3;
     graphDataLoader.getData(datasource).then(value => {
+      setTimeRestriction(value.nodes.reduce((max, node) => {
+        if (max < node.end) {
+          max = node.end;
+        }
+        return max;
+      }, -1));
       const processedData: GraphData = {
         nodes: value.nodes.filter(node => {
           return (node.start ?? -1) <= time && (node.end ?? Infinity) >= time;
@@ -142,14 +149,14 @@ const NodeGraph: React.FC<DashboardPanel> = (
 
       graph.current?.data(processedData);
 
-      startTime = Date.now();
+      startTime.current = Date.now();
       setTimeUsage(-1);
 
       graph.current?.render();
       applyRules();
       graph.current?.changeSize(ref.current?.clientWidth ?? 0, ref.current?.clientHeight ?? 0);
     });
-  }, [key, datasource]);
+  }, [key, datasource, time]);
 
   return (
     <div ref={ref} style={{height: '100%'}}>
@@ -207,15 +214,19 @@ const NodeGraph: React.FC<DashboardPanel> = (
           <Button
             size="small"
             type="text"
+            disabled={time <= 1}
             icon={<NavigateBefore size={18}/>}
             onClick={() => {
+              setTime(time - 1);
             }}
           />
           <Button
             size="small"
             type="text"
+            disabled={time >= timeRestriction}
             icon={<NavigateNext size={18}/>}
             onClick={() => {
+              setTime(time + 1);
             }}
           />
         </Space>

@@ -14,6 +14,23 @@ export const GlobalStyle = createGlobalStyle<{
   body {
     min-width: 1080px;
   }
+
+  ::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: inherit;
+    border-radius: 8px;
+    background-clip: content-box;
+    border: 1px solid transparent;
+  }
+
+  body[scroll],::-webkit-scrollbar-thumb {
+    background-color: rgba(103, 157, 224, 0.1);
+    transition: 0s;
+  }
 `;
 
 export const ThemeWrapper = styled(ConfigProvider)`
