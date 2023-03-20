@@ -64,6 +64,12 @@ const EditView: React.FC<{
                   </Form.Item>
                 </Panel>
                 <Panel key='2' header='Node Options'>
+                  <Form.Item
+                    label="field name of id"
+                    name={['nodeOptions', 'key']}
+                  >
+                    <Input placeholder="default as name"/>
+                  </Form.Item>
                   Rules
                   <Form.List name={['nodeOptions', 'rules']}>
                     {(fields, {add, remove}) => (

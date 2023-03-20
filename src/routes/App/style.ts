@@ -1,5 +1,5 @@
 import styled, {createGlobalStyle} from "styled-components";
-import {Button, ConfigProvider, GlobalToken, Layout, theme} from "antd";
+import {Button, ConfigProvider, GlobalToken, Layout} from "antd";
 
 const {Header, Sider, Content} = Layout;
 
@@ -22,7 +22,7 @@ export const GlobalStyle = createGlobalStyle<{
 
   ::-webkit-scrollbar-thumb {
     background-color: inherit;
-    border-radius: 8px;
+    border-radius: 1px;
     background-clip: content-box;
     border: 1px solid transparent;
   }

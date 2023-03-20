@@ -14,9 +14,10 @@ export const ViewControl = styled.div`
 export const InfoWrapper = styled(Space)`
   >.ant-space-item{
     >.ant-tag {
+      display: flex;
+      align-items: center;
       >svg {
-        height: 20px;
-        margin-right: 4px;
+        margin-right: 5px;
       }
     }
   }

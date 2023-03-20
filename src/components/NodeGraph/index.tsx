@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react";
 import {Button, Space, Tag, theme} from "antd";
-import G6, {Graph, GraphData, ModelConfig} from "@antv/g6";
+import G6, {Graph, GraphData, INode, ModelConfig} from "@antv/g6";
 import {
   Download,
   FitScreen,
@@ -10,6 +10,7 @@ import {
   ZoomIn,
   ZoomOut
 } from "@styled-icons/material-outlined";
+import {FieldTimeOutlined} from "@ant-design/icons/lib/icons";
 import {SyncOutlined} from '@ant-design/icons';
 import {DashboardPanel, graphDataLoader, judge} from "../../utils";
 import {InfoWrapper, ViewControl} from "./style";
@@ -64,7 +65,6 @@ const NodeGraph: React.FC<DashboardPanel> = (
         if (rule?.fieldName === key) {
           // field name is id
           if (judge(rule.type, node.getID(), rule.value)) {
-            console.log(node)
             set = true;
             node.update({
               ...defaultNodeModel,
@@ -135,6 +135,7 @@ const NodeGraph: React.FC<DashboardPanel> = (
         }).map(node => ({
           ...node,
           id: node[key] as string,
+          ...graph.current?.findById(node[key])?._cfg?.model
         })),
         edges: value.links.filter(link => {
           return (link.start ?? -1) <= time && (link.end ?? Infinity) >= time;
@@ -145,7 +146,6 @@ const NodeGraph: React.FC<DashboardPanel> = (
           target: link.target.toString(),
         }))
       };
-      console.log(processedData)
 
       graph.current?.data(processedData);
 
@@ -169,6 +169,9 @@ const NodeGraph: React.FC<DashboardPanel> = (
             <Tag icon={<Timer size={16}/>} color="success">
               {timeUsage} ms
             </Tag>}
+          <Tag icon={<FieldTimeOutlined />}>
+            {time}
+          </Tag>
         </InfoWrapper>
         <Space wrap>
           <Button
