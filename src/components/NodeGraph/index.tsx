@@ -14,6 +14,8 @@ import {FieldTimeOutlined} from "@ant-design/icons/lib/icons";
 import {SyncOutlined} from '@ant-design/icons';
 import {DashboardPanel, graphDataLoader, judge} from "../../utils";
 import {InfoWrapper, ViewControl} from "./style";
+import {LinkDatum, markovMobility, NodeDatum} from "../../plugin";
+import initNodePos from "../../plugin/initNodePos";
 
 const NodeGraph: React.FC<DashboardPanel> = (
   {
@@ -76,7 +78,17 @@ const NodeGraph: React.FC<DashboardPanel> = (
             });
           }
         } else {
-
+          if (judge(rule?.type, node?._cfg?.model?.[rule?.fieldName], rule?.value)) {
+            set = true;
+            node.update({
+              ...defaultNodeModel,
+              style: {
+                ...defaultNodeModel.style,
+                fill: rule.config.lColor,
+                stroke: rule.config.lStroke
+              }
+            });
+          }
         }
       });
 
@@ -102,17 +114,18 @@ const NodeGraph: React.FC<DashboardPanel> = (
         width: ref.current?.clientWidth,
         height: ref.current?.clientHeight,
         layout: {
-          type: 'force',
-          // type: 'restricted-force-layout',
+          // type: 'force',
+          type: 'restricted-force-layout',
           linkDistance: 10,
           nodeStrength: -30,
           preventOverlap: true,
           nodeSize: 6,
           enableTick: true,
-          alphaDecay: 0.028,
+          alphaDecay: 1 - Math.pow(0.001, 1 / 100),
           alphaMin: 0.001,
           alpha: 0.3,
           onLayoutEnd: () => {
+            console.log('onLayoutEnd()', graph.current);
             setTimeUsage(Date.now() - startTime.current);
           }
         },
@@ -147,6 +160,17 @@ const NodeGraph: React.FC<DashboardPanel> = (
         }))
       };
 
+      const {edges: oldEdges, nodes: oldNodes} = (graph.current?.save() ?? {edges: [], nodes: []}) as unknown as {
+        edges: LinkDatum[],
+        nodes: NodeDatum[],
+      };
+      const {edges, nodes} = processedData as unknown as {
+        edges: LinkDatum[],
+        nodes: NodeDatum[],
+      };
+      initNodePos(oldNodes, oldEdges, nodes, edges);
+      markovMobility(oldNodes, oldEdges, nodes, edges);
+      console.log(nodes);
       graph.current?.data(processedData);
 
       startTime.current = Date.now();
