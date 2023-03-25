@@ -1,5 +1,5 @@
 import {MenuCollapseButton, StyledSider} from "./style";
-import {ChevronLeft, ChevronRight, Dashboard} from "@styled-icons/material-outlined";
+import {ChevronLeft, ChevronRight, Dashboard, Storage} from "@styled-icons/material-outlined";
 import {GlobalToken, Menu} from "antd";
 import React, {useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -31,10 +31,11 @@ function AppSider({token}: {
         items={[
           {
             key: '/data',
-            label: 'nav 1',
+            label: 'data',
             onClick: () => {
               navigator('/data');
-            }
+            },
+            icon: <Storage size={22}/>
           },
           {
             key: '/dashboards',

@@ -58,6 +58,16 @@ const NodeGraph: React.FC<DashboardPanel> = (
     }
   ];
 
+  function parseValue(value: string | undefined) {
+    if (value?.at(0) === '$') {
+      return {
+        $time: time,
+      }[value];
+    } else {
+      return value;
+    }
+  }
+
   function applyRules() {
     const nodes = graph.current?.getNodes();
     nodes?.forEach(node => {
@@ -66,7 +76,7 @@ const NodeGraph: React.FC<DashboardPanel> = (
       rules.forEach(rule => {
         if (rule?.fieldName === key) {
           // field name is id
-          if (judge(rule.type, node.getID(), rule.value)) {
+          if (judge(rule.type, node.getID(), parseValue(rule.value))) {
             set = true;
             node.update({
               ...defaultNodeModel,
@@ -78,7 +88,7 @@ const NodeGraph: React.FC<DashboardPanel> = (
             });
           }
         } else {
-          if (judge(rule?.type, node?._cfg?.model?.[rule?.fieldName], rule?.value)) {
+          if (judge(rule?.type, node?._cfg?.model?.[rule?.fieldName], parseValue(rule?.value))) {
             set = true;
             node.update({
               ...defaultNodeModel,
