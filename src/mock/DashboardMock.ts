@@ -3,7 +3,6 @@ import dashboardsData from './data/dashboards.json';
 import dashboardData from './data/dashboard.json';
 import graphData from './data/graphData.json';
 import db from "../utils/db";
-import {ActionEnum} from "../utils/db/types";
 
 Mock.mock("/api/v1/dashboards", "post", dashboardsData);
 
@@ -21,4 +20,4 @@ Mock.mock("/api/v1/data/uid/00000001", "get", graphData["00000001"]);
 //   console.log(res)
 // })
 
-db.data('dashboard', ActionEnum.GET_ALL).then(console.log);
+// db.data('dashboard', ActionEnum.GET_ALL).then(console.log);

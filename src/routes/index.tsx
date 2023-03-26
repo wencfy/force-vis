@@ -5,6 +5,7 @@ import DashboardManager from "./DashboardManager";
 import Dashboard from "./Dashboard";
 import Test from "./Dashboard/Test";
 import {getDashboard} from "../utils";
+import db from "../utils/db";
 
 export const routes = createBrowserRouter([
   {
@@ -18,6 +19,9 @@ export const routes = createBrowserRouter([
       {
         path: 'dashboards',
         element: <DashboardManager/>,
+        loader: async () => {
+          return db.data('dashboard', 'getAll');
+        }
       },
       {
         path: 'd/:uid/:name',

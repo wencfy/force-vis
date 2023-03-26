@@ -1,10 +1,12 @@
-export enum ActionEnum {
-  ADD = 'add',
-  GET = 'get',
-  PUT = 'put',
-  DEL = 'delete',
-  GET_ALL = 'getAll',
+export interface RetData<T>  {
+  add: Promise<null>,
+  get: Promise<T>,
+  put: Promise<null>,
+  delete: Promise<null>,
+  getAll: Promise<Array<T>>,
 }
+
+export type Actions = keyof RetData<null>;
 
 export interface DashboardData {
   dashboard: {

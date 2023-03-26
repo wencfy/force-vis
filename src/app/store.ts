@@ -1,12 +1,12 @@
 import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
-import dashboardManagerReducer from "../routes/DashboardManager/dashboardManagerSlice";
+import {dashboardReducer} from "../utils/db";
 import globalConfigReducer from "../routes/App/globalConfigSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    dashboards: dashboardManagerReducer,
+    dashboard: dashboardReducer,
     globalConfig: globalConfigReducer,
   },
 });
