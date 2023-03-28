@@ -1,10 +1,11 @@
 import React from "react";
 import {useSearchParams} from "react-router-dom";
 import {theme} from "antd";
-import {ModeEdit, Pageview} from "@styled-icons/material-outlined";
+import {Delete, ModeEdit, Pageview} from "@styled-icons/material-outlined";
 import {ArrowDown, CardTitleWrapper, StyledCard, StyledDropdown} from "./style";
 
 const GridPanel = React.forwardRef<HTMLDivElement, {
+  updatePanel: (id: string) => void,
   panelInfo?: {
     title?: string,
     id?: string,
@@ -17,6 +18,7 @@ const GridPanel = React.forwardRef<HTMLDivElement, {
   children?: React.ReactNode,
 }>((
   {
+    updatePanel,
     panelInfo: {
       title,
       id
@@ -58,8 +60,14 @@ const GridPanel = React.forwardRef<HTMLDivElement, {
       }
     },
     {
-      label: '3rd menu item',
-      key: '3',
+      label: 'delete',
+      key: '2',
+      icon: <Delete size={18}/>,
+      onClick: () => {
+        if (id) {
+          updatePanel(id);
+        }
+      }
     },
   ];
 

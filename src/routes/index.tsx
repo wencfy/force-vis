@@ -1,11 +1,10 @@
 import {createBrowserRouter} from "react-router-dom";
 import App from "./App";
-import DataView from "./DataView";
+import DataManager from "./DataManager";
 import DashboardManager from "./DashboardManager";
 import Dashboard from "./Dashboard";
 import Test from "./Dashboard/Test";
-import {getDashboard} from "../utils";
-import db from "../utils/db";
+import {db} from "../utils";
 
 export const routes = createBrowserRouter([
   {
@@ -14,20 +13,20 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: 'data',
-        element: <DataView />,
+        element: <DataManager />,
       },
       {
         path: 'dashboards',
         element: <DashboardManager/>,
         loader: async () => {
-          return db.data('dashboard', 'getAll');
+          return await db.data('dashboard', 'getAll');
         }
       },
       {
-        path: 'd/:uid/:name',
+        path: 'dashboard/:uid/:name',
         element: <Dashboard/>,
         loader: async ({params}) => {
-          return getDashboard({uid: params.uid ?? ''});
+          return await db.data('dashboard', "get", params.uid);
         }
       },
       {

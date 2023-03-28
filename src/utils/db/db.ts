@@ -1,4 +1,4 @@
-import {Actions, Dashboard, Datasource, RetData} from "./types";
+import {Actions, RetData} from "./types";
 
 class DatabaseManager {
   private static dbName: string = 'database';
@@ -29,12 +29,14 @@ class DatabaseManager {
         dashboardsStore.createIndex('url', 'url', {unique: true});
         dashboardsStore.createIndex('tags', 'tags', {unique: false});
         dashboardsStore.createIndex('data', 'data', {unique: false});
+        dashboardsStore.createIndex('lastModified', 'lastModified', {unique: false});
       }
       if (!db.objectStoreNames.contains('datasource')) {
         const datasourceStore = db.createObjectStore('datasource', {keyPath: 'uid'});
         datasourceStore.createIndex('name', 'name', {unique: true});
         datasourceStore.createIndex('meta', 'meta', {unique: false});
         datasourceStore.createIndex('data', 'data', {unique: false});
+        datasourceStore.createIndex('lastModified', 'lastModified', {unique: false});
       }
     }
     request.onerror = _ => {

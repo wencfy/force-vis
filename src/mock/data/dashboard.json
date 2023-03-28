@@ -3,6 +3,7 @@
     "status": 0,
     "data": {
       "dashboard": {
+        "curId": 3,
         "panels": [
           {
             "gridPos": {

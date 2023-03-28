@@ -1,10 +1,11 @@
 import React, {useState} from "react";
-import {Button, Col, Collapse, Form, Input, Select, Space} from "antd";
+import {Button, Col, Collapse, Form, Input, Select, Space, theme} from "antd";
 import {CaretRightOutlined} from '@ant-design/icons';
 import {Add, Delete, FilterAlt, Settings} from "@styled-icons/material-outlined";
-import {ControlBoardWrapper, EditViewWrapper, FilterWrapper, RuleWrapper} from "./style";
+import {ActionWrapper, ControlBoardWrapper, EditViewWrapper, FilterWrapper, RuleWrapper} from "./style";
 import {DashboardPanel, deepClone} from "../../utils";
 import {ColorPicker, GridPanel, NodeGraph} from "../../components";
+import {useNavigate} from "react-router-dom";
 
 const {Panel} = Collapse;
 
@@ -17,14 +18,18 @@ const options: Record<string, string> = {
 }
 
 const EditView: React.FC<{
-  editPanel: DashboardPanel
+  editPanel: DashboardPanel,
+  updatePanel: (id: string, panel?: DashboardPanel) => void,
 }> = function (
   {
-    editPanel
+    editPanel,
+    updatePanel
   }
 ) {
   const [panel, setPanel] = useState(deepClone(editPanel));
   const [form] = Form.useForm();
+  const token = theme.useToken().token;
+  const navigator = useNavigate();
 
   return (
     <>
@@ -37,9 +42,11 @@ const EditView: React.FC<{
               title: panel.panelOptions.title,
               id: panel.id
             }}
+            updatePanel={updatePanel}
           >
             <NodeGraph
               {...panel}
+              updatePanel={updatePanel}
             />
           </GridPanel>
         </Col>
@@ -152,8 +159,23 @@ const EditView: React.FC<{
                 </Panel>
               </Collapse>
             </Form>
+          <ActionWrapper color={token.colorFillAlter}>
+            <Button
+              type='text'
+              size='small'
+              danger
+              onClick={() => navigator(-1)}
+            >Discard</Button>
+            <Button
+              type='text'
+              size='small'
+            >Save</Button>
+            <Button
+              type='primary'
+              size='small'
+            >Apply</Button>
+          </ActionWrapper>
           </ControlBoardWrapper>
-          {/*<button onClick={() => {console.log(form.getFieldValue([]))}}>click</button>*/}
         </Col>
       </EditViewWrapper>
     </>

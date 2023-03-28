@@ -10,9 +10,8 @@ export type Actions = keyof RetData<null>;
 
 export interface DashboardData {
   dashboard: {
+    curId: number;
     panels: Array<DashboardPanel>;
-    uid: string;
-    title: string;
   };
   meta: {}
 }
@@ -26,7 +25,7 @@ export interface DashboardPanel {
   };
   id: string;
   panelOptions: {
-    datasource: string;
+    datasource?: string;
     title: string;
   };
   nodeOptions: {
@@ -48,6 +47,7 @@ export interface DashboardPanel {
 export interface Dashboard {
   uid: string;
   name: string;
+  lastModified: number;
   url: string;
   tags: Array<string>;
   data: DashboardData;
@@ -83,7 +83,11 @@ export interface Datasource {
   data: GraphData;
 }
 
-export function judge<T>(option: OptionEnum, val1: T, val2: T) {
+export function judge<T>(val1: T, val2: T, option?: `${OptionEnum}`) {
+  if (!option) {
+    return false;
+  }
+
   let ret: boolean;
   switch (option) {
     case OptionEnum.EQ:
@@ -100,6 +104,9 @@ export function judge<T>(option: OptionEnum, val1: T, val2: T) {
       break;
     case OptionEnum.LT:
       ret = val1 < val2;
+      break;
+    default:
+      ret = false;
       break;
   }
   return ret;

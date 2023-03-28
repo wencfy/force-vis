@@ -19,12 +19,6 @@ const ActionBar: React.FC = function () {
           }}
         />
       </Tooltip>
-      <Tooltip title='login'>
-        <Button
-          type='text'
-          icon={<Login size={18}/>}
-        />
-      </Tooltip>
     </Space>
   )
 }

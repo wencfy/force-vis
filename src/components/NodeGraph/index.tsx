@@ -1,6 +1,6 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Space, Tag, theme} from "antd";
-import G6, {Graph, GraphData, INode, ModelConfig} from "@antv/g6";
+import G6, {Graph, GraphData, ModelConfig} from "@antv/g6";
 import {
   Download,
   FitScreen,
@@ -17,23 +17,29 @@ import {InfoWrapper, ViewControl} from "./style";
 import {LinkDatum, markovMobility, NodeDatum} from "../../plugin";
 import initNodePos from "../../plugin/initNodePos";
 
-const NodeGraph: React.FC<DashboardPanel> = (
+const NodeGraph: React.FC<
+  DashboardPanel & {updatePanel: (id: string, newPanel?: DashboardPanel) => void}
+> = (
   {
+    id,
     gridPos: {
       w, h
     },
     panelOptions: {
       datasource,
       title,
-      type
     },
     nodeOptions: {
       key = 'name',
       rules
     },
+    updatePanel,
   }
 ) => {
   console.log('NodeGraph() called');
+  if (key.trim() === '') {
+    key = 'name';
+  }
   const ref = React.useRef<HTMLDivElement>(null);
   const {token, theme: {id: isDark}} = theme.useToken();
 
@@ -76,26 +82,26 @@ const NodeGraph: React.FC<DashboardPanel> = (
       rules.forEach(rule => {
         if (rule?.fieldName === key) {
           // field name is id
-          if (judge(rule.type, node.getID(), parseValue(rule.value))) {
+          if (judge(node.getID(), parseValue(rule.value), rule.type)) {
             set = true;
             node.update({
               ...defaultNodeModel,
               style: {
                 ...defaultNodeModel.style,
-                fill: rule.config.lColor,
-                stroke: rule.config.lStroke
+                fill: rule.config?.lColor,
+                stroke: rule.config?.lStroke
               }
             });
           }
         } else {
-          if (judge(rule?.type, node?._cfg?.model?.[rule?.fieldName], parseValue(rule?.value))) {
+          if (judge(node?._cfg?.model?.[rule?.fieldName ?? 0], parseValue(rule?.value), rule?.type)) {
             set = true;
             node.update({
               ...defaultNodeModel,
               style: {
                 ...defaultNodeModel.style,
-                fill: rule.config.lColor,
-                stroke: rule.config.lStroke
+                fill: rule.config?.lColor,
+                stroke: rule.config?.lStroke
               }
             });
           }
@@ -145,51 +151,55 @@ const NodeGraph: React.FC<DashboardPanel> = (
       });
     }
 
-    graphDataLoader.getData(datasource).then(value => {
-      setTimeRestriction(value.nodes.reduce((max, node) => {
-        if (max < node.end) {
-          max = node.end;
-        }
-        return max;
-      }, -1));
-      const processedData: GraphData = {
-        nodes: value.nodes.filter(node => {
-          return (node.start ?? -1) <= time && (node.end ?? Infinity) >= time;
-        }).map(node => ({
-          ...node,
-          id: node[key] as string,
-          ...graph.current?.findById(node[key])?._cfg?.model
-        })),
-        edges: value.links.filter(link => {
-          return (link.start ?? -1) <= time && (link.end ?? Infinity) >= time;
-        }).map(link => ({
-          ...link,
-          id: link.id.toString(),
-          source: link.source.toString(),
-          target: link.target.toString(),
-        }))
-      };
+    if (datasource && datasource !== '') {
+      graphDataLoader.getData(datasource).then(value => {
+        setTimeRestriction(value.nodes.reduce((max, node) => {
+          if (max < node.end) {
+            max = node.end;
+          }
+          return max;
+        }, -1));
+        const processedData: GraphData = {
+          nodes: value.nodes.filter(node => {
+            return (node.start ?? -1) <= time && (node.end ?? Infinity) >= time;
+          }).map(node => ({
+            ...node,
+            id: node[key] as string,
+            ...graph.current?.findById(node[key])?._cfg?.model
+          })),
+          edges: value.links.filter(link => {
+            return (link.start ?? -1) <= time && (link.end ?? Infinity) >= time;
+          }).map(link => ({
+            ...link,
+            id: link.id.toString(),
+            source: link.source.toString(),
+            target: link.target.toString(),
+          }))
+        };
 
-      const {edges: oldEdges, nodes: oldNodes} = (graph.current?.save() ?? {edges: [], nodes: []}) as unknown as {
-        edges: LinkDatum[],
-        nodes: NodeDatum[],
-      };
-      const {edges, nodes} = processedData as unknown as {
-        edges: LinkDatum[],
-        nodes: NodeDatum[],
-      };
-      initNodePos(oldNodes, oldEdges, nodes, edges);
-      markovMobility(oldNodes, oldEdges, nodes, edges);
-      console.log(nodes);
-      graph.current?.data(processedData);
+        const {edges: oldEdges, nodes: oldNodes} = (graph.current?.save() ?? {edges: [], nodes: []}) as unknown as {
+          edges: LinkDatum[],
+          nodes: NodeDatum[],
+        };
+        const {edges, nodes} = processedData as unknown as {
+          edges: LinkDatum[],
+          nodes: NodeDatum[],
+        };
+        initNodePos(oldNodes, oldEdges, nodes, edges);
+        markovMobility(oldNodes, oldEdges, nodes, edges);
+        console.log(nodes);
+        graph.current?.data(processedData);
 
-      startTime.current = Date.now();
-      setTimeUsage(-1);
+        startTime.current = Date.now();
+        setTimeUsage(-1);
 
-      graph.current?.render();
-      applyRules();
-      graph.current?.changeSize(ref.current?.clientWidth ?? 0, ref.current?.clientHeight ?? 0);
-    });
+        graph.current?.render();
+        applyRules();
+        graph.current?.changeSize(ref.current?.clientWidth ?? 0, ref.current?.clientHeight ?? 0);
+      });
+    } else {
+      setTimeUsage(0);
+    }
   }, [key, datasource, time]);
 
   return (

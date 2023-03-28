@@ -28,7 +28,7 @@ export const GlobalStyle = createGlobalStyle<{
   }
 
   body[scroll],::-webkit-scrollbar-thumb {
-    background-color: rgba(103, 157, 224, 0.1);
+    background-color: ${props => props.token.colorFillAlter};
     transition: 0s;
   }
 `;

@@ -1,6 +1,6 @@
 import httpClient from "./httpClient";
 
-export interface DashboardData {
+interface DashboardData {
   dashboard: {
     panels: Array<DashboardPanel>;
     uid: string;
@@ -9,7 +9,7 @@ export interface DashboardData {
   meta: {}
 }
 
-export interface DashboardPanel {
+interface DashboardPanel {
   gridPos: {
     x: number;
     y: number;
@@ -20,7 +20,6 @@ export interface DashboardPanel {
   panelOptions: {
     datasource: string;
     title: string;
-    type: OptionEnum;
   };
   nodeOptions: {
     key: string;
@@ -38,7 +37,7 @@ export interface DashboardPanel {
   }
 }
 
-export enum OptionEnum {
+enum OptionEnum {
   EQ = 'EQ',
   GT = 'GT',
   LT = 'LT',
@@ -46,7 +45,7 @@ export enum OptionEnum {
   LE = 'LE'
 }
 
-export function judge<T>(option: OptionEnum, val1: T, val2: T) {
+function judge<T>(option: OptionEnum, val1: T, val2: T) {
   let ret: boolean;
   switch (option) {
     case OptionEnum.EQ:
@@ -68,15 +67,15 @@ export function judge<T>(option: OptionEnum, val1: T, val2: T) {
   return ret;
 }
 
-export enum DashboardPanelTypeEnum {
+enum DashboardPanelTypeEnum {
   Graph = 'nodeGraph',
 }
 
-export interface GetDashboardPayload {
+interface GetDashboardPayload {
   uid: string;
 }
 
-export async function getDashboard(payload: GetDashboardPayload): Promise<DashboardData> {
+async function getDashboard(payload: GetDashboardPayload): Promise<DashboardData> {
   const {uid} = payload;
   const response = await httpClient.get<{ data: DashboardData }>(`/api/v1/dashboard/uid/${uid}`);
   return response.data.data;

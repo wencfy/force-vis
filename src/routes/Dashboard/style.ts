@@ -1,5 +1,17 @@
 import styled from "styled-components";
-import {Card, Row} from "antd";
+import {Card, Row, Space} from "antd";
+
+export const ActionWrapper = styled(Space)<{color?: string}>`
+  display: flex;
+  position: absolute;
+  align-items: flex-end;
+  justify-content: end;
+  padding: 8px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: ${props => props.color};
+`;
 
 export const EditViewWrapper = styled(Row).attrs({
   gutter: 16
@@ -12,11 +24,16 @@ export const EditViewWrapper = styled(Row).attrs({
 
 export const ControlBoardWrapper = styled(Card)`
   height: 100%;
-  overflow-y: scroll;
 
   .ant-card-body {
     padding: 0;
-
+    height: 100%;
+    
+    >form {
+      overflow-y: scroll;
+      height: calc(100% - 40px);
+    }
+    
     .ant-collapse-header {
       padding: 4px 6px;
     }

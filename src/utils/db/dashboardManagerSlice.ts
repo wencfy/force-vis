@@ -1,9 +1,9 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import db, {Dashboard} from "./index";
+import {db, Dashboard} from "./index";
 import {RootState} from "../../app/store";
-import {ListState} from "../../components";
+import {DataViewState} from "../../components";
 
-interface DashboardManagerState extends ListState<Dashboard> {
+interface DashboardManagerState extends DataViewState<Dashboard> {
 
 }
 
@@ -33,7 +33,7 @@ export const dashboardManagerSlice = createSlice({
       .addCase(getDashboardsAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.values = action.payload;
-      })
+      });
   }
 });
 

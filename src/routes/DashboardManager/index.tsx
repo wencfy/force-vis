@@ -1,13 +1,20 @@
-import {getDashboardsAsync} from "../../utils/db";
-import {useAppDispatch} from "../../app/hooks";
-import {ListView} from "../../components";
+import {useEffect} from "react";
+import {getDashboardsAsync, selectDashboard} from "../../utils";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {DataView} from "../../components";
 
 function DashboardManager() {
-
   const dispatch = useAppDispatch();
-  dispatch(getDashboardsAsync());
 
-  return <ListView></ListView>;
+  useEffect(() => {
+    dispatch(getDashboardsAsync());
+  }, [dispatch]);
+  const dashboardState = useAppSelector(selectDashboard);
+
+  return <DataView
+    state={dashboardState}
+    storeName='dashboard'
+  ></DataView>;
 }
 
 export default DashboardManager;
