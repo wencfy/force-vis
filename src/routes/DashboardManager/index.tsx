@@ -1,7 +1,7 @@
-import {useEffect} from "react";
-import {getDashboardsAsync, selectDashboard} from "../../utils";
+import {useCallback, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {DataView} from "../../components";
+import {getDashboardsAsync, selectDashboard} from "./dashboardManagerSlice";
 
 function DashboardManager() {
   const dispatch = useAppDispatch();

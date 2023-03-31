@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {db, Dashboard} from "./index";
-import {RootState} from "../../app/store";
 import {DataViewState} from "../../components";
+import {db, Dashboard} from "../../utils";
+import {RootState} from "../../app/store";
 
 interface DashboardManagerState extends DataViewState<Dashboard> {
 
@@ -21,7 +21,7 @@ export const getDashboardsAsync = createAsyncThunk(
   }
 );
 
-export const dashboardManagerSlice = createSlice({
+const dashboardManagerSlice = createSlice({
   name: 'dashboard',
   initialState,
   reducers: {},
