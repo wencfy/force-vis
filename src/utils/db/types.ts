@@ -80,7 +80,9 @@ export interface Datasource {
   uid: string;
   name: string;
   meta: any;
+  tags: Array<string>;
   data: GraphData;
+  lastModified: number;
 }
 
 export function judge<T>(val1: T, val2: T, option?: `${OptionEnum}`) {

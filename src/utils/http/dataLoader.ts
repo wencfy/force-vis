@@ -1,13 +1,21 @@
 import httpClient from "./httpClient";
+import {Datasource, db} from "../db";
 
 interface GetDataPayload {
   uid: string;
 }
 
-async function getData<T>(payload: GetDataPayload): Promise<T> {
-  const { uid } = payload;
+async function getNetworkData<T>(payload: GetDataPayload): Promise<T> {
+  const {uid} = payload;
   const response = await httpClient.get<{ data: T }>(`/api/v1/data/uid/${uid}`);
   return response.data.data;
+}
+
+async function getData<T>(payload: GetDataPayload): Promise<T> {
+  const {uid} = payload;
+  const datasource = await db.data<Datasource, 'get'>('datasource', "get", uid);
+  console.log(datasource)
+  return datasource.data as T;
 }
 
 interface GraphData {
@@ -43,4 +51,4 @@ class DataLoader<T> {
 
 const graphDataLoader = new DataLoader<GraphData>();
 
-export { graphDataLoader };
+export {graphDataLoader};

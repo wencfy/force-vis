@@ -35,6 +35,7 @@ class DatabaseManager {
         const datasourceStore = db.createObjectStore('datasource', {keyPath: 'uid'});
         datasourceStore.createIndex('name', 'name', {unique: true});
         datasourceStore.createIndex('meta', 'meta', {unique: false});
+        datasourceStore.createIndex('tags', 'tags', {unique: false});
         datasourceStore.createIndex('data', 'data', {unique: false});
         datasourceStore.createIndex('lastModified', 'lastModified', {unique: false});
       }
