@@ -19,7 +19,7 @@ const options: Record<string, string> = {
 
 const EditView: React.FC<{
   editPanel: DashboardPanel,
-  updatePanel: (id: string, panel?: DashboardPanel) => void,
+  updatePanel: ({id, newPanel, toDb}: { id: string, newPanel?: DashboardPanel, toDb?: boolean }) => void
 }> = function (
   {
     editPanel,
@@ -67,6 +67,9 @@ const EditView: React.FC<{
               >
                 <Panel key='1' header='Panel Options'>
                   <Form.Item name={['panelOptions', 'title']} label='Title'>
+                    <Input/>
+                  </Form.Item>
+                  <Form.Item name={['panelOptions', 'datasource']} label='Datasource'>
                     <Input/>
                   </Form.Item>
                 </Panel>
@@ -117,23 +120,23 @@ const EditView: React.FC<{
                               <Button
                                 type='text'
                                 size="small"
-                                icon={<Delete size={18} onClick={() => remove(field.name)} />} />
+                                icon={<Delete size={18} onClick={() => remove(field.name)}/>}/>
                             </FilterWrapper>
                             <Space align="center">
                               <Form.Item>
-                                <Settings size={18} />
+                                <Settings size={18}/>
                               </Form.Item>
 
                               <Space.Compact>
                                 <Form.Item
                                   label='Fill Color'
                                   name={[field.name, 'config', 'lColor']}>
-                                  <ColorPicker />
+                                  <ColorPicker/>
                                 </Form.Item>
                                 <Form.Item
                                   label='Stroke Color'
                                   name={[field.name, 'config', 'lStroke']}>
-                                  <ColorPicker />
+                                  <ColorPicker/>
                                 </Form.Item>
                               </Space.Compact>
                             </Space>
@@ -159,22 +162,25 @@ const EditView: React.FC<{
                 </Panel>
               </Collapse>
             </Form>
-          <ActionWrapper color={token.colorFillAlter}>
-            <Button
-              type='text'
-              size='small'
-              danger
-              onClick={() => navigator(-1)}
-            >Discard</Button>
-            <Button
-              type='text'
-              size='small'
-            >Save</Button>
-            <Button
-              type='primary'
-              size='small'
-            >Apply</Button>
-          </ActionWrapper>
+            <ActionWrapper color={token.colorFillAlter}>
+              <Button
+                type='text'
+                size='small'
+                danger
+                onClick={() => navigator(-1)}
+              >Discard</Button>
+              <Button
+                type='text'
+                size='small'
+              >Save</Button>
+              <Button
+                type='primary'
+                size='small'
+                onClick={() => {
+                  updatePanel({id: panel.id, newPanel: panel, toDb: true});
+                }}
+              >Apply</Button>
+            </ActionWrapper>
           </ControlBoardWrapper>
         </Col>
       </EditViewWrapper>

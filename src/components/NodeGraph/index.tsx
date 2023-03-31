@@ -18,7 +18,9 @@ import {LinkDatum, markovMobility, NodeDatum} from "../../plugin";
 import initNodePos from "../../plugin/initNodePos";
 
 const NodeGraph: React.FC<
-  DashboardPanel & {updatePanel: (id: string, newPanel?: DashboardPanel) => void}
+  DashboardPanel & {
+  updatePanel: ({id, newPanel, toDb}: { id: string, newPanel?: DashboardPanel, toDb?: boolean }) => void
+}
 > = (
   {
     id,
@@ -213,7 +215,7 @@ const NodeGraph: React.FC<
             <Tag icon={<Timer size={16}/>} color="success">
               {timeUsage} ms
             </Tag>}
-          <Tag icon={<FieldTimeOutlined />}>
+          <Tag icon={<FieldTimeOutlined/>}>
             {time}
           </Tag>
         </InfoWrapper>

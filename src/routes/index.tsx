@@ -1,6 +1,6 @@
 import {createBrowserRouter} from "react-router-dom";
 import App from "./App";
-import DataManager from "./DataManager";
+import DatasourceManager from "./DatasourceManager";
 import DashboardManager from "./DashboardManager";
 import Dashboard from "./Dashboard";
 import Test from "./Dashboard/Test";
@@ -13,7 +13,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: 'data',
-        element: <DataManager />,
+        element: <DatasourceManager />,
       },
       {
         path: 'dashboards',

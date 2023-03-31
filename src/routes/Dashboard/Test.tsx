@@ -1,11 +1,12 @@
 import React, {useState} from "react";
-import {ColorPicker} from "../../components";
+import {ColorPicker, FilePicker} from "../../components";
 
 const Test = function () {
 
   return (
     <>
       <ColorPicker></ColorPicker>
+      <FilePicker />
     </>
   )
 }

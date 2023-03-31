@@ -1,11 +1,11 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useLoaderData, useSearchParams} from 'react-router-dom';
 import GridLayout from "react-grid-layout";
 import {FloatButton} from "antd";
 import {AddChart, Save} from "@styled-icons/material-outlined";
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import {Dashboard as DashboardType, DashboardData, DashboardPanel} from "../../utils";
+import {Dashboard as DashboardType, DashboardData, DashboardPanel, db} from "../../utils";
 import {NodeGraph, GridPanel} from "../../components";
 import EditView from "./EditView";
 
@@ -29,7 +29,7 @@ function Dashboard() {
   }
   const [data, setData] = useState(loaderData);
 
-  const {curId, panels} = data.data.dashboard;
+  const {curId, panels} = data.data.dashboard
   const setPanels = (panels: DashboardPanel[]) => {
     setData({
       ...data,
@@ -56,7 +56,18 @@ function Dashboard() {
 
   let retNode: React.ReactNode;
 
-  const updatePanel = useCallback((id: string, newPanel?: DashboardPanel) => {
+  const [dbController, setDbController] = useState(false);
+  const synchronizeDb = () => setDbController(!dbController);
+  useEffect(() => {
+    db.data('dashboard', 'put', data).then(res => {
+
+    });
+  }, [dbController])
+  const updatePanel = useCallback(({id, newPanel, toDb}: {
+    id: string,
+    newPanel?: DashboardPanel,
+    toDb?: boolean
+  }) => {
     if (newPanel) {
       setPanels(panels.map(panel => {
         if (panel.id === id) {
@@ -68,7 +79,11 @@ function Dashboard() {
     } else {
       setPanels(panels.filter((panel) => panel.id !== id));
     }
+    if (toDb) {
+      synchronizeDb();
+    }
   }, [panels, setPanels]);
+
 
   if (editPanel) {
     retNode = (<EditView editPanel={editPanel} updatePanel={updatePanel}/>);
@@ -106,6 +121,7 @@ function Dashboard() {
               }
             });
             setPanels(updatedPanels);
+            synchronizeDb();
           }}
         >
           {panels.map((panel) => {
@@ -155,6 +171,7 @@ function Dashboard() {
                   }
                 }
               });
+              synchronizeDb();
             }}
           />
           <FloatButton

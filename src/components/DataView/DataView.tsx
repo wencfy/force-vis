@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {Tag, Table, Button, Space, Modal, SelectProps, Form, Input, Select, message, theme} from "antd";
+import {Tag, Table, Button, Space, Modal, SelectProps, Form, Input, Select, message, theme, Upload} from "antd";
 import {ColumnsType} from "antd/es/table";
 import {AddChart, Delete, Pageview} from "@styled-icons/material-outlined";
 import {nanoid} from "nanoid";
 import {db, getTagStyleFromString} from "../../utils";
 import {DataViewState, ViewData} from "./types";
 import {TableWrapper} from "./style";
+import {FilePicker} from "../index";
 
 function DataView<T extends ViewData>(
   {state, storeName}: { state: DataViewState<T>, storeName: string }
@@ -37,6 +38,7 @@ function DataView<T extends ViewData>(
       lastModified: undefined,
       url: undefined,
       blob: undefined,
+      data: undefined,
     }
   }
 
@@ -136,7 +138,7 @@ function DataView<T extends ViewData>(
         fields.uid = nanoid(9);
         fields.url = `/${storeName}/${fields.uid}/${fields.name.toLowerCase().split(' ').join('-')}`;
         fields.lastModified = Date.now();
-        fields.data = {};
+        fields.data = fields.data ?? {};
         db.data(storeName, 'add', fields).then(res => {
           setModalLoading(false);
           setAddRecord(false);
@@ -150,7 +152,10 @@ function DataView<T extends ViewData>(
           });
         })
       }}
-      onCancel={() => setAddRecord(false)}
+      onCancel={() => {
+        console.log(form.getFieldValue([]))
+        // setAddRecord(false)
+      }}
     >
       <Form
         form={form}
@@ -175,6 +180,15 @@ function DataView<T extends ViewData>(
             )}
           />
         </Form.Item>
+        {
+          storeName === 'datasource' &&
+          <Form.Item
+            name={['data']}
+            label='Data'
+          >
+            <FilePicker />
+          </Form.Item>
+        }
       </Form>
     </Modal>
   </TableWrapper>

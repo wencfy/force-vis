@@ -3,9 +3,10 @@ import {useSearchParams} from "react-router-dom";
 import {theme} from "antd";
 import {Delete, ModeEdit, Pageview} from "@styled-icons/material-outlined";
 import {ArrowDown, CardTitleWrapper, StyledCard, StyledDropdown} from "./style";
+import {DashboardPanel} from "../../utils";
 
 const GridPanel = React.forwardRef<HTMLDivElement, {
-  updatePanel: (id: string) => void,
+  updatePanel: ({id, newPanel, toDb}: { id: string, newPanel?: DashboardPanel, toDb?: boolean }) => void
   panelInfo?: {
     title?: string,
     id?: string,
@@ -65,7 +66,7 @@ const GridPanel = React.forwardRef<HTMLDivElement, {
       icon: <Delete size={18}/>,
       onClick: () => {
         if (id) {
-          updatePanel(id);
+          updatePanel({id});
         }
       }
     },
