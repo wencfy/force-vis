@@ -1,4 +1,5 @@
 import {ID, LinkDatum, NodeDatum} from "./algorithms/types";
+import {idFromEdge} from "./algorithms/common";
 
 function defaultId(node: NodeDatum) {
   if (node.id) {
@@ -17,13 +18,6 @@ function initNodePos(
 ) {
   if (!oldNodes.length) {
     return;
-  }
-  const idFromEdge = (node: ID | NodeDatum): ID => {
-    if (typeof node === 'object') {
-      return id(node);
-    } else {
-      return node;
-    }
   }
 
   nodes.forEach(node => {

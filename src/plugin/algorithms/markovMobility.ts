@@ -1,6 +1,6 @@
 import {scaleLinear} from "d3-scale";
 import {ID, LinkDatum, NodeDatum} from "./types";
-import {__adjacent_matrix, __degree, defaultId, dijkstra} from "./common";
+import {__adjacent_matrix, __degree, defaultId, dijkstra, idFromEdge} from "./common";
 
 function markovMobility(
 	oldNodes: NodeDatum[],
@@ -76,19 +76,11 @@ function markovMobility(
 		}
 	});
 
-	const idFromEdge = (node: ID | NodeDatum): ID => {
-		if (typeof node === 'object') {
-			return id(node);
-		} else {
-			return node;
-		}
-	}
-
 	//1.3 针对每条新增的连边，会影响连边两端的节点的移动概率
 	links.forEach((link) => {
 		if (!oldLinksById[link.id]) {
-			p0[idFromEdge(link.source)] += 1 / degree[idFromEdge(link.source)];
-			p0[idFromEdge(link.target)] += 1 / degree[idFromEdge(link.target)];
+			p0[idFromEdge(link.source, id)] += 1 / degree[idFromEdge(link.source, id)];
+			p0[idFromEdge(link.target, id)] += 1 / degree[idFromEdge(link.target, id)];
 		}
 	});
 

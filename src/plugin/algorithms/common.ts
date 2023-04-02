@@ -1,5 +1,13 @@
 import {ID, LinkDatum, NodeDatum} from "./types";
 
+export const idFromEdge = (node: ID | NodeDatum, id: typeof defaultId = defaultId): ID => {
+  if (typeof node === 'object') {
+    return id(node);
+  } else {
+    return node;
+  }
+}
+
 export function defaultId(node: NodeDatum) {
   if (node.id) {
     return node.id;
@@ -11,8 +19,8 @@ export function defaultId(node: NodeDatum) {
 export function __adjacent_matrix(links: LinkDatum[], id: typeof defaultId = defaultId) {
   let adjacentMatrix: Record<ID, Record<ID, number>> = {};
   links.forEach(link => {
-    let src = typeof link.source === 'object' ? id(link.source) : link.source;
-    let tgt = typeof link.target === 'object' ? id(link.target) : link.target;
+    let src = idFromEdge(link.source);
+    let tgt = idFromEdge(link.target);
 
     if (!adjacentMatrix[src]) {
       adjacentMatrix[src] = {};
