@@ -14,7 +14,7 @@ import {FieldTimeOutlined} from "@ant-design/icons/lib/icons";
 import {SyncOutlined} from '@ant-design/icons';
 import {DashboardPanel, graphDataLoader, judge} from "../../utils";
 import {InfoWrapper, ViewControl} from "./style";
-import {ageMobility, LinkDatum, markovMobility, NodeDatum} from "../../plugin";
+import {ageMobility, LinkDatum, markovMobility, NodeDatum, pinningWeightMobility} from "../../plugin";
 import initNodePos from "../../plugin/initNodePos";
 
 const NodeGraph: React.FC<
@@ -189,7 +189,8 @@ const NodeGraph: React.FC<
         };
         initNodePos(oldNodes, oldEdges, nodes, edges);
         // markovMobility(oldNodes, oldEdges, nodes, edges);
-        ageMobility(oldNodes, oldEdges, nodes, edges);
+        // ageMobility(oldNodes, oldEdges, nodes, edges);
+        pinningWeightMobility(oldNodes, oldEdges, nodes, edges);
         console.log(nodes);
         graph.current?.data(processedData);
 
