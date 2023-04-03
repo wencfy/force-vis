@@ -15,15 +15,17 @@ export function y(d: SimulationNodeDatum) {
 let initialRadius = 10,
   initialAngle = Math.PI * (3 - Math.sqrt(5));
 
-export interface DynamicSimulation<NodeDatum, LinkDatum> extends Simulation<NodeDatum, LinkDatum>{
-  sp(): this;
+export interface DynamicSimulation<
+  NodeDatum extends SimulationNodeDatum,
+  LinkDatum extends SimulationLinkDatum<NodeDatum>
+> extends Simulation<NodeDatum, LinkDatum> {
 }
 
 const DynamicForceSimulation = function <
   NodeDatum extends SimulationNodeDatum,
   LinkDatum extends SimulationLinkDatum<NodeDatum>
 >(nodes?: NodeDatum[]): DynamicSimulation<NodeDatum, LinkDatum> {
-  let simulation: Simulation<NodeDatum, LinkDatum>,
+  let simulation: DynamicSimulation<NodeDatum, LinkDatum>,
     alpha = 1,
     alphaMin = 0.001,
     alphaDecay = 1 - Math.pow(alphaMin, 1 / 300),
@@ -32,9 +34,7 @@ const DynamicForceSimulation = function <
     forces = new Map(),
     stepper = timer(step),
     event = dispatch("tick", "end"),
-    random = lcg(),
-    energy,
-    sp;
+    random = lcg();
 
   if (nodes == null) nodes = [];
 
@@ -172,14 +172,6 @@ const DynamicForceSimulation = function <
 
     on: function (name, _) {
       return arguments.length > 1 ? (event.on(name, _), simulation) : event.on(name);
-    },
-
-    energy: function (_) {
-      return arguments.length ? (energy = +_, simulation) : energy;
-    },
-
-    sp: function (_) {
-      return arguments.length ? (sp = _, simulation) : sp;
     },
   };
 }

@@ -14,7 +14,7 @@ import {FieldTimeOutlined} from "@ant-design/icons/lib/icons";
 import {SyncOutlined} from '@ant-design/icons';
 import {DashboardPanel, graphDataLoader, judge} from "../../utils";
 import {InfoWrapper, ViewControl} from "./style";
-import {ageMobility, LinkDatum, markovMobility, NodeDatum, pinningWeightMobility} from "../../plugin";
+import {ageMobility, degreeMobility, LinkDatum, markovMobility, NodeDatum, pinningWeightMobility} from "../../plugin";
 import initNodePos from "../../plugin/initNodePos";
 
 const NodeGraph: React.FC<
@@ -127,6 +127,7 @@ const NodeGraph: React.FC<
 
   useEffect(() => {
     if (!graph.current) {
+      console.log(ref.current?.clientWidth, ref.current?.clientHeight)
       graph.current = new G6.Graph({
         container: ref.current as HTMLDivElement,
         width: ref.current?.clientWidth,
@@ -190,7 +191,8 @@ const NodeGraph: React.FC<
         initNodePos(oldNodes, oldEdges, nodes, edges);
         // markovMobility(oldNodes, oldEdges, nodes, edges);
         // ageMobility(oldNodes, oldEdges, nodes, edges);
-        pinningWeightMobility(oldNodes, oldEdges, nodes, edges);
+        // pinningWeightMobility(oldNodes, oldEdges, nodes, edges);
+        // degreeMobility(oldNodes, oldEdges, nodes, edges);
         console.log(nodes);
         graph.current?.data(processedData);
 
