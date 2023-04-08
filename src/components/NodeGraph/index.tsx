@@ -14,7 +14,14 @@ import {FieldTimeOutlined} from "@ant-design/icons/lib/icons";
 import {SyncOutlined} from '@ant-design/icons';
 import {DashboardPanel, graphDataLoader, judge} from "../../utils";
 import {InfoWrapper, ViewControl} from "./style";
-import {ageMobility, degreeMobility, LinkDatum, markovMobility, NodeDatum, pinningWeightMobility} from "../../plugin";
+import {
+  ageMobility,
+  degreeMobility,
+  LinkDatum,
+  markovMobility,
+  NodeDatum,
+  pinningWeightMobility
+} from "../../plugin";
 import initNodePos from "../../plugin/initNodePos";
 
 const NodeGraph: React.FC<
@@ -29,6 +36,7 @@ const NodeGraph: React.FC<
     },
     panelOptions: {
       datasource,
+      algorithm,
       title,
     },
     nodeOptions: {
@@ -126,14 +134,12 @@ const NodeGraph: React.FC<
   useEffect(applyRules, [defaultNodeModel, defaultEdgeModel, key, rules]);
 
   useEffect(() => {
-    if (!graph.current) {
-      console.log(ref.current?.clientWidth, ref.current?.clientHeight)
+    if (!graph.current && ref.current?.clientHeight) {
       graph.current = new G6.Graph({
         container: ref.current as HTMLDivElement,
         width: ref.current?.clientWidth,
         height: ref.current?.clientHeight,
         layout: {
-          // type: 'force',
           type: 'restricted-force-layout',
           linkDistance: 10,
           nodeStrength: -30,
@@ -189,11 +195,23 @@ const NodeGraph: React.FC<
           nodes: NodeDatum[],
         };
         initNodePos(oldNodes, oldEdges, nodes, edges);
-        // markovMobility(oldNodes, oldEdges, nodes, edges);
-        // ageMobility(oldNodes, oldEdges, nodes, edges);
-        // pinningWeightMobility(oldNodes, oldEdges, nodes, edges);
-        // degreeMobility(oldNodes, oldEdges, nodes, edges);
-        console.log(nodes);
+        // apply algorithms
+        switch (algorithm) {
+          case 'markov mobility':
+            markovMobility(oldNodes, oldEdges, nodes, edges);
+            break;
+          case 'degree mobility':
+            degreeMobility(oldNodes, oldEdges, nodes, edges);
+            break;
+          case 'age mobility':
+            ageMobility(oldNodes, oldEdges, nodes, edges);
+            break;
+          case 'pinning weight mobility':
+            pinningWeightMobility(oldNodes, oldEdges, nodes, edges);
+            break;
+          default:
+
+        }
         graph.current?.data(processedData);
 
         startTime.current = Date.now();
@@ -206,7 +224,7 @@ const NodeGraph: React.FC<
     } else {
       setTimeUsage(0);
     }
-  }, [key, datasource, time]);
+  }, [key, datasource, time, ref.current?.clientHeight, algorithm]);
 
   return (
     <div ref={ref} style={{height: '100%'}}>

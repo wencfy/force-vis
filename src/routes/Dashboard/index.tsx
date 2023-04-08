@@ -156,6 +156,7 @@ function Dashboard() {
                 id: curId.toString(),
                 panelOptions: {
                   title: '',
+                  algorithm: 'default'
                 },
                 nodeOptions: {
                   rules: [],

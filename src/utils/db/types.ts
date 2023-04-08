@@ -26,6 +26,7 @@ export interface DashboardPanel {
   id: string;
   panelOptions: {
     datasource?: string;
+    algorithm: string;
     title: string;
   };
   nodeOptions: {

@@ -15,7 +15,11 @@ const options: Record<string, string> = {
   "GE": ">=",
   "LE": "<=",
   "EQ": "="
-}
+};
+
+const algorithms: Array<string> = [
+  "default", "markov mobility", "degree mobility", "age mobility", "pinning weight mobility"
+];
 
 const EditView: React.FC<{
   editPanel: DashboardPanel,
@@ -71,6 +75,15 @@ const EditView: React.FC<{
                   </Form.Item>
                   <Form.Item name={['panelOptions', 'datasource']} label='Datasource'>
                     <Input/>
+                  </Form.Item>
+                  <Form.Item name={['panelOptions', 'algorithm']} label='algorithm'>
+                    <Select>
+                      {algorithms.map((alg: string) => (
+                        <Select.Option key={alg} value={alg}>
+                          {alg}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Panel>
                 <Panel key='2' header='Node Options'>
