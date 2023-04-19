@@ -61,13 +61,29 @@ const DynamicForceSimulation = function <
 
       for (i = 0; i < n; ++i) {
         node = nodes[i];
-        if (node.fx == null) node.x += node.vx *= velocityDecay;
-        else {
+        // if (node.fx == null) node.x += node.vx *= velocityDecay;
+        // else {
+        //   node.x = node.fx;
+        //   node.vx = 0;
+        // }
+        // if (node.fy == null) node.y += node.vy *= velocityDecay;
+        // else {
+        //   node.y = node.fy;
+        //   node.vy = 0;
+        // }
+        if (node.fx == null){
+          node.vx *= velocityDecay; //节点朝x轴方向的速度减缓
+          if(node.mobility) node.x += node.mobility*node.vx;
+          else node.x += node.vx;
+        } else {
           node.x = node.fx;
           node.vx = 0;
         }
-        if (node.fy == null) node.y += node.vy *= velocityDecay;
-        else {
+        if (node.fy == null){
+          node.vy *= velocityDecay; //节点朝y轴方向的速度减缓
+          if(node.mobility) node.y += node.mobility*node.vy;
+          else node.y += node.vy;
+        } else {
           node.y = node.fy;
           node.vy = 0;
         }

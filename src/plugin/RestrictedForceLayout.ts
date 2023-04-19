@@ -97,7 +97,7 @@ export class RestrictedForceLayout extends Base {
       nodeSpacing: undefined,
       linkDistance: 50,
       forceSimulation: null,
-      alphaDecay: 1 - Math.pow(0.001, 1 / 200),
+      alphaDecay: 1 - Math.pow(0.001, 1 / 300),
       alphaMin: 0.001,
       alpha: 0.3,
       collideStrength: 1,
@@ -185,6 +185,14 @@ export class RestrictedForceLayout extends Base {
         simulation
           .force("center", d3Force.forceCenter(self.center[0], self.center[1]))
           .force("charge", nodeForce)
+          .force(
+            "link",
+            d3Force
+              .forceLink()
+              .distance(50)
+          )
+          .force("x", d3Force.forceX().strength(0.03))
+          .force("y", d3Force.forceY().strength(0.03))
           .alpha(alpha)
           .alphaDecay(alphaDecay)
           .alphaMin(alphaMin);

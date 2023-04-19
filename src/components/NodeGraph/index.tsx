@@ -61,7 +61,7 @@ const NodeGraph: React.FC<
 
   const [defaultNodeModel, defaultEdgeModel]: [ModelConfig, ModelConfig] = [
     {
-      size: 10,
+      size: 3,
       style: {
         fill: token.colorInfoBg,
         stroke: token.colorInfoBorderHover
@@ -69,7 +69,8 @@ const NodeGraph: React.FC<
     },
     {
       style: {
-        stroke: token.colorBorder
+        stroke: '#333'
+        // stroke: token.colorBorder
       }
     }
   ];
@@ -141,12 +142,12 @@ const NodeGraph: React.FC<
         height: ref.current?.clientHeight,
         layout: {
           type: 'restricted-force-layout',
-          linkDistance: 10,
+          linkDistance: 50,
           nodeStrength: -30,
           preventOverlap: true,
-          nodeSize: 6,
+          nodeSize: 3,
           enableTick: true,
-          alphaDecay: 1 - Math.pow(0.001, 1 / 100),
+          alphaDecay: 1 - Math.pow(0.001, 1 / 150),
           alphaMin: 0.001,
           alpha: 0.3,
           onLayoutEnd: () => {

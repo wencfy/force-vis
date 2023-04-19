@@ -1,4 +1,4 @@
-import {ID, LinkDatum, NodeDatum} from "./algorithms/types";
+import {ID, LinkDatum, NodeDatum} from "./types";
 import {idFromEdge} from "./algorithms/common";
 
 function defaultId(node: NodeDatum) {
@@ -17,6 +17,22 @@ function initNodePos(
   id: (node: NodeDatum) => ID = defaultId,
 ) {
   if (!oldNodes.length) {
+    let initialRadius = 10;
+    let initialAngle = Math.PI * (3 - Math.sqrt(5));
+    for (let i = 0, n = nodes.length, node; i < n; ++i) {
+      node = nodes[i];
+      node.index = i;
+      if (node.fx != null) node.x = node.fx;
+      if (node.fy != null) node.y = node.fy;
+      if (isNaN(node.x ?? NaN) || isNaN(node.y ?? NaN)) {
+        let radius = initialRadius * Math.sqrt(0.5 + i), angle = i * initialAngle;
+        node.x = radius * Math.cos(angle);
+        node.y = radius * Math.sin(angle);
+      }
+      if (isNaN(node.vx ?? NaN) || isNaN(node.vy ?? NaN)) {
+        node.vx = node.vy = 0;
+      }
+    }
     return;
   }
 

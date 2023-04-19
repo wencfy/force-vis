@@ -1,4 +1,4 @@
-import {ID, LinkDatum, NodeDatum} from "./types";
+import {ID, LinkDatum, NodeDatum} from "../types";
 import {__adjacent_matrix, defaultId} from "./common";
 
 function ageMobility(

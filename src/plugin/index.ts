@@ -4,5 +4,5 @@ import ageMobility from "./algorithms/ageMobility";
 import pinningWeightMobility from "./algorithms/pinningWeightMobility";
 import degreeMobility from "./algorithms/degreeModility";
 
-export * from './algorithms/types';
+export * from './types';
 export {ageMobility, markovMobility, pinningWeightMobility, degreeMobility};

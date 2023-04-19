@@ -1,4 +1,4 @@
-import {ID, LinkDatum, NodeDatum} from "./types";
+import {ID, LinkDatum, NodeDatum} from "../types";
 import {__adjacent_matrix, __degree, defaultId, idFromEdge} from "./common";
 
 function pinningWeightMobility(

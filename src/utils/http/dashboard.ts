@@ -34,6 +34,9 @@ interface DashboardPanel {
         dStroke: string;
       };
     }>;
+  };
+  linkOptions: {
+    lColor: string;
   }
 }
 

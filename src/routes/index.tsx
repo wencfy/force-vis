@@ -3,7 +3,7 @@ import App from "./App";
 import DatasourceManager from "./DatasourceManager";
 import DashboardManager from "./DashboardManager";
 import Dashboard from "./Dashboard";
-import Test from "./Dashboard/Test";
+import Test from "./Test";
 import {db} from "../utils";
 
 export const routes = createBrowserRouter([

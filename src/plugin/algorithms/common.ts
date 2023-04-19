@@ -1,4 +1,4 @@
-import {ID, LinkDatum, NodeDatum} from "./types";
+import {ID, LinkDatum, NodeDatum} from "../types";
 
 export const idFromEdge = (node: ID | NodeDatum, id: typeof defaultId = defaultId): ID => {
   if (typeof node === 'object') {

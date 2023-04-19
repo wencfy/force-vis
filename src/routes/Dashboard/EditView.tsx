@@ -171,7 +171,11 @@ const EditView: React.FC<{
                   </Form.List>
                 </Panel>
                 <Panel key='3' header='Link Options'>
-
+                  <Form.Item
+                    label="link color"
+                    name={['linkOptions', 'key']}
+                  >
+                  </Form.Item>
                 </Panel>
               </Collapse>
             </Form>
