@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Col, Collapse, Form, Input, Select, Space, theme} from "antd";
+import {Button, Col, Collapse, Form, Input, InputNumber, Select, Space, theme} from "antd";
 import {CaretRightOutlined} from '@ant-design/icons';
 import {Add, Delete, FilterAlt, Settings} from "@styled-icons/material-outlined";
 import {ActionWrapper, ControlBoardWrapper, EditViewWrapper, FilterWrapper, RuleWrapper} from "./style";
@@ -140,7 +140,7 @@ const EditView: React.FC<{
                                 <Settings size={18}/>
                               </Form.Item>
 
-                              <Space.Compact>
+                              <Space.Compact size='small'>
                                 <Form.Item
                                   label='Fill Color'
                                   name={[field.name, 'config', 'lColor']}>
@@ -150,6 +150,11 @@ const EditView: React.FC<{
                                   label='Stroke Color'
                                   name={[field.name, 'config', 'lStroke']}>
                                   <ColorPicker/>
+                                </Form.Item>
+                                <Form.Item
+                                  label='Node Size'
+                                  name={[field.name, 'config', 'size']}>
+                                  <InputNumber min={1} max={10}/>
                                 </Form.Item>
                               </Space.Compact>
                             </Space>

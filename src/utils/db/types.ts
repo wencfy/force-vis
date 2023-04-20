@@ -40,6 +40,7 @@ export interface DashboardPanel {
         lStroke?: string;
         dColor?: string;
         dStroke?: string;
+        size?: number;
       };
     }>;
   }
