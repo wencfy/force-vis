@@ -14,4 +14,6 @@ export interface NodeDatum extends SimulationNodeDatum {
 
 export interface LinkDatum<N extends NodeDatum = NodeDatum> extends SimulationLinkDatum<N> {
   id: ID;
+  startPoint: N;
+  endPoint: N;
 }

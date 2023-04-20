@@ -73,3 +73,10 @@ export function dijkstra(adjacentMatrix: Record<ID, Record<ID, number>>, start: 
   }
   return distances;
 }
+
+export function dis(node1: NodeDatum, node2: NodeDatum) {
+  if (node1.x !== undefined && node2.x !== undefined && node1.y !== undefined && node2.y !== undefined) {
+    return Math.sqrt(Math.pow(node1.x - node2.x, 2) + Math.pow(node1.y - node2.y, 2));
+  }
+  return 0;
+}

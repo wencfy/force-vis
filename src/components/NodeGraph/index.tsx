@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Button, Space, Tag, theme} from "antd";
 import G6, {Graph, GraphData, ModelConfig} from "@antv/g6";
 import {
@@ -17,12 +17,25 @@ import {InfoWrapper, ViewControl} from "./style";
 import {
   ageMobility,
   degreeMobility,
+  EvalMetrics,
   LinkDatum,
   markovMobility,
   NodeDatum,
   pinningWeightMobility
 } from "../../plugin";
 import initNodePos from "../../plugin/initNodePos";
+
+const constants = {
+  type: 'restricted-force-layout',
+  linkDistance: 50,
+  nodeStrength: -30,
+  preventOverlap: true,
+  nodeSize: 3,
+  enableTick: true,
+  alphaDecay: 1 - Math.pow(0.001, 1 / 150),
+  alphaMin: 0.001,
+  alpha: 0.3,
+}
 
 const NodeGraph: React.FC<
   DashboardPanel & {
@@ -75,6 +88,16 @@ const NodeGraph: React.FC<
     }
   ];
 
+  const prevState = useRef<{ nodes: NodeDatum[], edges: LinkDatum[] }>({nodes: [], edges: []});
+  const metrics = useRef<Array<{
+    time: number;
+    energy: number;
+    deltaPos: number;
+    deltaLen: number;
+    deltaDir: number;
+    deltaOrth: number;
+  }>>([]);
+
   function parseValue(value: string | undefined) {
     if (value?.at(0) === '$') {
       return {
@@ -97,10 +120,11 @@ const NodeGraph: React.FC<
             set = true;
             node.update({
               ...defaultNodeModel,
+              size: rule.config?.size ?? defaultNodeModel.size,
               style: {
                 ...defaultNodeModel.style,
                 fill: rule.config?.lColor,
-                stroke: rule.config?.lStroke
+                stroke: rule.config?.lStroke,
               }
             });
           }
@@ -109,6 +133,7 @@ const NodeGraph: React.FC<
             set = true;
             node.update({
               ...defaultNodeModel,
+              size: rule.config?.size ?? defaultNodeModel.size,
               style: {
                 ...defaultNodeModel.style,
                 fill: rule.config?.lColor,
@@ -141,18 +166,35 @@ const NodeGraph: React.FC<
         width: ref.current?.clientWidth,
         height: ref.current?.clientHeight,
         layout: {
-          type: 'restricted-force-layout',
-          linkDistance: 50,
-          nodeStrength: -30,
-          preventOverlap: true,
-          nodeSize: 3,
-          enableTick: true,
-          alphaDecay: 1 - Math.pow(0.001, 1 / 150),
-          alphaMin: 0.001,
-          alpha: 0.3,
+          ...constants,
           onLayoutEnd: () => {
             console.log('onLayoutEnd()', graph.current);
-            setTimeUsage(Date.now() - startTime.current);
+            let res: {
+              time: number;
+              energy: number;
+              deltaPos: number;
+              deltaLen: number;
+              deltaDir: number;
+              deltaOrth: number;
+            };
+            const time = Date.now() - startTime.current;
+            setTimeUsage(time);
+            const {edges: oldEdges, nodes: oldNodes} = prevState.current;
+            const {edges, nodes} = (graph.current?.save() ?? {edges: [], nodes: []}) as unknown as {
+              edges: LinkDatum[],
+              nodes: NodeDatum[],
+            }
+            // apply metrics
+            res = {
+              time: time,
+              ...(new EvalMetrics(
+                {nodes, links: edges},
+                constants.linkDistance,
+                {nodes: oldNodes, links: oldEdges}
+              )).all()
+            }
+            metrics.current.push(res);
+            console.log(metrics.current);
           }
         },
         modes: {
@@ -187,10 +229,11 @@ const NodeGraph: React.FC<
           }))
         };
 
-        const {edges: oldEdges, nodes: oldNodes} = (graph.current?.save() ?? {edges: [], nodes: []}) as unknown as {
+        prevState.current = (graph.current?.save() ?? {edges: [], nodes: []}) as unknown as {
           edges: LinkDatum[],
           nodes: NodeDatum[],
         };
+        const {edges: oldEdges, nodes: oldNodes} = prevState.current;
         const {edges, nodes} = processedData as unknown as {
           edges: LinkDatum[],
           nodes: NodeDatum[],
