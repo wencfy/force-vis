@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Collapse, Form, Input, InputNumber, Select, Space, theme} from "antd";
 import {CaretRightOutlined} from '@ant-design/icons';
 import {Add, Delete, FilterAlt, Settings} from "@styled-icons/material-outlined";
 import {ActionWrapper, ControlBoardWrapper, EditViewWrapper, FilterWrapper, RuleWrapper} from "./style";
-import {DashboardPanel, deepClone} from "../../utils";
+import {DashboardPanel, Datasource, db, deepClone} from "../../utils";
 import {ColorPicker, GridPanel, NodeGraph} from "../../components";
 import {useNavigate} from "react-router-dom";
 
@@ -31,9 +31,16 @@ const EditView: React.FC<{
   }
 ) {
   const [panel, setPanel] = useState(deepClone(editPanel));
+  const [dsList, setDsList] = useState<Array<{label: string, value: string}>>([]);
   const [form] = Form.useForm();
   const token = theme.useToken().token;
   const navigator = useNavigate();
+
+  useEffect(() => {
+    db.data<Datasource, 'getAll'>('datasource', 'getAll').then(res => {
+      setDsList(res.map(ds => ({label: ds.name, value: ds.uid})));
+    });
+  }, []);
 
   return (
     <>
@@ -74,7 +81,7 @@ const EditView: React.FC<{
                     <Input/>
                   </Form.Item>
                   <Form.Item name={['panelOptions', 'datasource']} label='Datasource'>
-                    <Input/>
+                    <Select options={dsList}/>
                   </Form.Item>
                   <Form.Item name={['panelOptions', 'algorithm']} label='algorithm'>
                     <Select>
