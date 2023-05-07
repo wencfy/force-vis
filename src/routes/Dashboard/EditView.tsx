@@ -1,11 +1,23 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Collapse, Form, Input, InputNumber, Select, Space, theme} from "antd";
+import {useNavigate} from "react-router-dom";
+import {
+  Button,
+  Col,
+  Collapse,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Space,
+  theme,
+} from "antd";
 import {CaretRightOutlined} from '@ant-design/icons';
 import {Add, Delete, FilterAlt, Settings} from "@styled-icons/material-outlined";
 import {ActionWrapper, ControlBoardWrapper, EditViewWrapper, FilterWrapper, RuleWrapper} from "./style";
+
 import {DashboardPanel, Datasource, db, deepClone} from "../../utils";
 import {ColorPicker, GridPanel, NodeGraph} from "../../components";
-import {useNavigate} from "react-router-dom";
+import StringValuedCascader from "./StringValuedCascader";
 
 const {Panel} = Collapse;
 
@@ -17,8 +29,55 @@ const options: Record<string, string> = {
   "EQ": "="
 };
 
-const algorithms: Array<string> = [
-  "default", "markov mobility", "degree mobility", "age mobility", "pinning weight mobility"
+const algorithms = [
+  {
+    value: "default",
+    label: "default",
+  },
+  {
+    value: "restrict algorithms",
+    label: "restrict algorithms",
+    children: [
+      {
+        value: "markov mobility",
+        label: "markov mobility"
+      },
+      {
+        value: "degree mobility",
+        label: "degree mobility"
+      },
+      {
+        value: "age mobility",
+        label: "age mobility"
+      },
+      {
+        value: "pinning weight mobility",
+        label: "pinning weight mobility"
+      },
+    ],
+  },
+  {
+    value: "restrict strategies",
+    label: "restrict strategies",
+    children: [
+      {
+        value: "node distance",
+        label: "node distance"
+      },
+      {
+        value: "node position",
+        label: "node position"
+      },
+      {
+        value: "link length",
+        label: "link length"
+      },
+      {
+        value: "link direction",
+        label: "link direction"
+      }
+    ]
+  }
 ];
 
 const EditView: React.FC<{
@@ -31,7 +90,7 @@ const EditView: React.FC<{
   }
 ) {
   const [panel, setPanel] = useState(deepClone(editPanel));
-  const [dsList, setDsList] = useState<Array<{label: string, value: string}>>([]);
+  const [dsList, setDsList] = useState<Array<{ label: string, value: string }>>([]);
   const [form] = Form.useForm();
   const token = theme.useToken().token;
   const navigator = useNavigate();
@@ -84,13 +143,8 @@ const EditView: React.FC<{
                     <Select options={dsList}/>
                   </Form.Item>
                   <Form.Item name={['panelOptions', 'algorithm']} label='algorithm'>
-                    <Select>
-                      {algorithms.map((alg: string) => (
-                        <Select.Option key={alg} value={alg}>
-                          {alg}
-                        </Select.Option>
-                      ))}
-                    </Select>
+                    <StringValuedCascader
+                      options={algorithms} />
                   </Form.Item>
                 </Panel>
                 <Panel key='2' header='Node Options'>

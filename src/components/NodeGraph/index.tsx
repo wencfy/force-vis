@@ -160,13 +160,33 @@ const NodeGraph: React.FC<
   useEffect(applyRules, [defaultNodeModel, defaultEdgeModel, key, rules]);
 
   useEffect(() => {
-    if (!graph.current && ref.current?.clientHeight) {
+    if (['node distance', 'node position', 'link length', 'link direction'].find((alg) => alg === algorithm) && graph.current) {
+      graph.current?.updateLayout({
+        type: {
+          'node distance': 'restricted-node-distance-force-layout',
+          'node position': 'restricted-node-position-force-layout',
+          'link length': 'restricted-link-length-force-layout',
+          'link direction': 'restricted-link-direction-force-layout',
+        }[algorithm] ?? 'restricted-force-layout',
+      });
+      graph.current?.refresh();
+    }
+  }, [algorithm]);
+
+  useEffect(() => {
+    if (!(graph.current || !ref.current?.clientHeight)) {
       graph.current = new G6.Graph({
         container: ref.current as HTMLDivElement,
         width: ref.current?.clientWidth,
         height: ref.current?.clientHeight,
         layout: {
           ...constants,
+          type: {
+            'node distance': 'restricted-node-distance-force-layout',
+            'node position': 'restricted-node-position-force-layout',
+            'link length': 'restricted-link-length-force-layout',
+            'link direction': 'restricted-link-direction-force-layout',
+          }[algorithm] ?? 'restricted-force-layout',
           onLayoutEnd: () => {
             console.log('onLayoutEnd()', graph.current);
             let res: {
@@ -185,16 +205,16 @@ const NodeGraph: React.FC<
               nodes: NodeDatum[],
             }
             // apply metrics
-            res = {
-              time: time,
-              ...(new EvalMetrics(
-                {nodes, links: edges},
-                constants.linkDistance,
-                {nodes: oldNodes, links: oldEdges}
-              )).all()
-            }
-            metrics.current.push(res);
-            console.log(metrics.current);
+            // res = {
+            //   time: time,
+            //   ...(new EvalMetrics(
+            //     {nodes, links: edges},
+            //     constants.linkDistance,
+            //     {nodes: oldNodes, links: oldEdges}
+            //   )).all()
+            // }
+            // metrics.current.push(res);
+            // console.log(metrics.current);
           }
         },
         modes: {
