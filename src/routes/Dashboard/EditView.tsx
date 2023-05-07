@@ -142,8 +142,9 @@ const EditView: React.FC<{
                   <Form.Item name={['panelOptions', 'datasource']} label='Datasource'>
                     <Select options={dsList}/>
                   </Form.Item>
-                  <Form.Item name={['panelOptions', 'algorithm']} label='algorithm'>
+                  <Form.Item name={['panelOptions', 'algorithm']} label='restrictions'>
                     <StringValuedCascader
+                      allowClear={false}
                       options={algorithms} />
                   </Form.Item>
                 </Panel>
