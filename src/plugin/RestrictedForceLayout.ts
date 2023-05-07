@@ -6,6 +6,7 @@ import forceInABox from "@antv/layout/lib/layout/force/force-in-a-box";
 import {Base} from "@antv/layout/lib/layout/base";
 import {LAYOUT_MESSAGE} from "@antv/layout/lib/layout/constants";
 import forceSimulation from "./DynamicForceSimulation";
+import {forceDis, forceLinkDir, forceLinkLen, forcePos} from "./forces";
 
 /**
  * 经典力导布局 force-directed
@@ -185,11 +186,12 @@ export class RestrictedForceLayout extends Base {
         simulation
           .force("center", d3Force.forceCenter(self.center[0], self.center[1]))
           .force("charge", nodeForce)
+          // .force("pos", forcePos())
           .force(
             "link",
             d3Force
               .forceLink()
-              .distance(50)
+              .distance(0)
           )
           .force("x", d3Force.forceX().strength(0.03))
           .force("y", d3Force.forceY().strength(0.03))
@@ -206,6 +208,7 @@ export class RestrictedForceLayout extends Base {
           const edgeForce = d3Force
             .forceLink()
             .id((d: any) => d.id)
+            .distance(0)
             .links(edges);
           if (self.edgeStrength) {
             edgeForce.strength(self.edgeStrength);
@@ -215,6 +218,10 @@ export class RestrictedForceLayout extends Base {
           }
           self.edgeForce = edgeForce;
           simulation.force("link", edgeForce);
+          simulation.force(
+            "linkLen",
+            forceLinkDir(edges as any)
+          );
         }
         if (self.workerEnabled && !isInWorker()) {
           // 如果不是运行在web worker里，不用web worker布局

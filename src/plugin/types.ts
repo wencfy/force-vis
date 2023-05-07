@@ -10,6 +10,7 @@ export interface NodeDatum extends SimulationNodeDatum {
   confidence: number;
   age: number;
   pinWeight: number;
+  prev?: NodeDatum;
 }
 
 export interface LinkDatum<N extends NodeDatum = NodeDatum> extends SimulationLinkDatum<N> {

@@ -82,8 +82,8 @@ const NodeGraph: React.FC<
     },
     {
       style: {
-        stroke: '#333'
-        // stroke: token.colorBorder
+        // stroke: '#333'
+        stroke: token.colorBorder
       }
     }
   ];

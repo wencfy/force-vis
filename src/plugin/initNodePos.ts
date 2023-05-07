@@ -44,6 +44,8 @@ function initNodePos(
         node.x = oldNodes[i].x;
         node.y = oldNodes[i].y;
         node.confidence = 1;
+        node.prev = oldNodes[i];
+        oldNodes[i].prev = undefined;
 
         // 将存在新增边的节点 confidence 设置为 .25
         let originalEdgeList: Array<ID> = [];

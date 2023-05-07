@@ -74,9 +74,13 @@ export function dijkstra(adjacentMatrix: Record<ID, Record<ID, number>>, start: 
   return distances;
 }
 
-export function dis(node1: NodeDatum, node2: NodeDatum) {
+export function dis(node1: Pick<NodeDatum, 'x' | 'y'>, node2: Pick<NodeDatum, 'x' | 'y'>) {
   if (node1.x !== undefined && node2.x !== undefined && node1.y !== undefined && node2.y !== undefined) {
     return Math.sqrt(Math.pow(node1.x - node2.x, 2) + Math.pow(node1.y - node2.y, 2));
   }
   return 0;
+}
+
+export function jiggle() {
+  return (Math.random() - 0.5) * 1e-6;
 }
