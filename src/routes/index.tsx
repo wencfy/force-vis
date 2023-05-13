@@ -16,7 +16,7 @@ export const routes = createBrowserRouter([
         element: <DatasourceManager />,
       },
       {
-        path: 'dashboards',
+        path: 'dashboard',
         element: <DashboardManager/>,
         loader: async () => {
           return await db.data('dashboard', 'getAll');

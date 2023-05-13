@@ -62,7 +62,7 @@ function Dashboard() {
     db.data('dashboard', 'put', data).then(res => {
 
     });
-  }, [dbController])
+  }, [dbController]);
   const updatePanel = useCallback(({id, newPanel, toDb}: {
     id: string,
     newPanel?: DashboardPanel,
@@ -156,7 +156,8 @@ function Dashboard() {
                 id: curId.toString(),
                 panelOptions: {
                   title: '',
-                  algorithm: 'default'
+                  algorithm: 'default',
+                  time: 1
                 },
                 nodeOptions: {
                   rules: [],

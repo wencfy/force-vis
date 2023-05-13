@@ -28,6 +28,7 @@ export interface DashboardPanel {
     datasource?: string;
     algorithm: string;
     title: string;
+    time: number;
   };
   nodeOptions: {
     key?: string;

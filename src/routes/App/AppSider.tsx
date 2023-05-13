@@ -38,19 +38,12 @@ function AppSider({token}: {
             icon: <Storage size={22}/>
           },
           {
-            key: '/dashboards',
+            key: '/dashboard',
             label: 'dashboards',
             onClick: () => {
-              navigator('/dashboards');
+              navigator('/dashboard');
             },
             icon: <Dashboard size={22}/>
-          },
-          {
-            key: '3',
-            label: 'test',
-            onClick: () => {
-              navigator('/test');
-            },
           },
         ]}
       >

@@ -28,3 +28,8 @@ export const useWindowSize = (): WindowSize => {
   }, []); // Empty array ensures that effect is only run on mount
   return windowSize;
 }
+
+export const useForceUpdate = () => {
+  let [value, setState] = useState(true);
+  return () => setState(!value);
+}

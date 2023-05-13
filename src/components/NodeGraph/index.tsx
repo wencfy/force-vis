@@ -42,7 +42,10 @@ const NodeGraph: React.FC<
   updatePanel: ({id, newPanel, toDb}: { id: string, newPanel?: DashboardPanel, toDb?: boolean }) => void
 }
 > = (
-  {
+  {updatePanel, ...panel}
+) => {
+  console.log('NodeGraph() called');
+  let {
     id,
     gridPos: {
       w, h
@@ -51,15 +54,13 @@ const NodeGraph: React.FC<
       datasource,
       algorithm,
       title,
+      time: panelTime
     },
     nodeOptions: {
       key = 'name',
       rules
     },
-    updatePanel,
-  }
-) => {
-  console.log('NodeGraph() called');
+  } = panel;
   if (key.trim() === '') {
     key = 'name';
   }
@@ -69,8 +70,24 @@ const NodeGraph: React.FC<
   const graph = React.useRef<Graph | null>(null);
   const startTime = React.useRef<number>(0);
   const [timeUsage, setTimeUsage] = useState<number>(-1);
-  const [time, setTime] = useState<number>(1);
   const [timeRestriction, setTimeRestriction] = useState(Infinity);
+  const [time, defaultSetTime] = useState(panelTime);
+  const setTime = (time: number) => {
+    updatePanel({
+      id,
+      newPanel: {
+        ...panel,
+        panelOptions: {
+          datasource,
+          algorithm,
+          title,
+          time
+        }
+      },
+      toDb: true
+    });
+    defaultSetTime(time);
+  }
 
   const [defaultNodeModel, defaultEdgeModel]: [ModelConfig, ModelConfig] = [
     {

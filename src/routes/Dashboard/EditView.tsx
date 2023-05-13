@@ -147,6 +147,9 @@ const EditView: React.FC<{
                       allowClear={false}
                       options={algorithms} />
                   </Form.Item>
+                  <Form.Item name={['panelOptions', 'time']} label='time'>
+                    <InputNumber />
+                  </Form.Item>
                 </Panel>
                 <Panel key='2' header='Node Options'>
                   <Form.Item
