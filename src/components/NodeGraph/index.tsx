@@ -27,10 +27,10 @@ import initNodePos from "../../plugin/initNodePos";
 
 const constants = {
   type: 'restricted-force-layout',
-  linkDistance: 50,
+  linkDistance: 30,
   nodeStrength: -30,
   preventOverlap: true,
-  nodeSize: 3,
+  nodeSize: 5,
   enableTick: true,
   alphaDecay: 1 - Math.pow(0.001, 1 / 150),
   alphaMin: 0.001,
@@ -68,7 +68,7 @@ const NodeGraph: React.FC<
   const {token, theme: {id: isDark}} = theme.useToken();
 
   const graph = React.useRef<Graph | null>(null);
-  const startTime = React.useRef<number>(0);
+  const states = React.useRef<{ startTime: number, curTime: number }>({startTime: 0, curTime: panelTime});
   const [timeUsage, setTimeUsage] = useState<number>(-1);
   const [timeRestriction, setTimeRestriction] = useState(Infinity);
   const [time, defaultSetTime] = useState(panelTime);
@@ -86,12 +86,13 @@ const NodeGraph: React.FC<
       },
       toDb: true
     });
+    states.current.curTime = time;
     defaultSetTime(time);
   }
 
   const [defaultNodeModel, defaultEdgeModel]: [ModelConfig, ModelConfig] = [
     {
-      size: 3,
+      size: 5,
       style: {
         fill: token.colorInfoBg,
         stroke: token.colorInfoBorderHover
@@ -177,20 +178,26 @@ const NodeGraph: React.FC<
   useEffect(applyRules, [defaultNodeModel, defaultEdgeModel, key, rules]);
 
   useEffect(() => {
-    if (['node distance', 'node position', 'link length', 'link direction'].find((alg) => alg === algorithm) && graph.current) {
+    if (['node distance', 'node position', 'link length', 'link direction'].find((alg) => algorithm.includes(alg)) && graph.current) {
       graph.current?.updateLayout({
-        type: {
-          'node distance': 'restricted-node-distance-force-layout',
-          'node position': 'restricted-node-position-force-layout',
-          'link length': 'restricted-link-length-force-layout',
-          'link direction': 'restricted-link-direction-force-layout',
-        }[algorithm] ?? 'restricted-force-layout',
+        restrictions: algorithm
       });
       graph.current?.refresh();
     }
   }, [algorithm]);
 
   useEffect(() => {
+    if (datasource && datasource !== '') {
+      graphDataLoader.getData(datasource).then(value => {
+        setTimeRestriction(value.nodes.reduce((max, node) => {
+          if (max < node.end) {
+            max = node.end;
+          }
+          return max;
+        }, -1));
+      });
+    }
+
     if (!(graph.current || !ref.current?.clientHeight)) {
       graph.current = new G6.Graph({
         container: ref.current as HTMLDivElement,
@@ -198,12 +205,7 @@ const NodeGraph: React.FC<
         height: ref.current?.clientHeight,
         layout: {
           ...constants,
-          type: {
-            'node distance': 'restricted-node-distance-force-layout',
-            'node position': 'restricted-node-position-force-layout',
-            'link length': 'restricted-link-length-force-layout',
-            'link direction': 'restricted-link-direction-force-layout',
-          }[algorithm] ?? 'restricted-force-layout',
+          restrictions: algorithm,
           onLayoutEnd: () => {
             console.log('onLayoutEnd()', graph.current);
             let res: {
@@ -214,24 +216,28 @@ const NodeGraph: React.FC<
               deltaDir: number;
               deltaOrth: number;
             };
-            const time = Date.now() - startTime.current;
-            setTimeUsage(time);
+            const timeUsage = Date.now() - states.current.startTime;
+            setTimeUsage(timeUsage);
             const {edges: oldEdges, nodes: oldNodes} = prevState.current;
             const {edges, nodes} = (graph.current?.save() ?? {edges: [], nodes: []}) as unknown as {
               edges: LinkDatum[],
               nodes: NodeDatum[],
             }
             // apply metrics
-            // res = {
-            //   time: time,
-            //   ...(new EvalMetrics(
-            //     {nodes, links: edges},
-            //     constants.linkDistance,
-            //     {nodes: oldNodes, links: oldEdges}
-            //   )).all()
-            // }
-            // metrics.current.push(res);
-            // console.log(metrics.current);
+            res = {
+              time: timeUsage,
+              ...(new EvalMetrics(
+                {nodes, links: edges},
+                constants.linkDistance,
+                {nodes: oldNodes, links: oldEdges}
+              )).all()
+            }
+            metrics.current.push(res);
+            if (states.current.curTime <= timeRestriction - 1) {
+              // setTime(states.current.curTime + 1);
+            } else {
+              console.log(title, metrics.current);
+            }
           }
         },
         modes: {
@@ -242,12 +248,6 @@ const NodeGraph: React.FC<
 
     if (datasource && datasource !== '') {
       graphDataLoader.getData(datasource).then(value => {
-        setTimeRestriction(value.nodes.reduce((max, node) => {
-          if (max < node.end) {
-            max = node.end;
-          }
-          return max;
-        }, -1));
         const processedData: GraphData = {
           nodes: value.nodes.filter(node => {
             return (node.start ?? -1) <= time && (node.end ?? Infinity) >= time;
@@ -275,28 +275,23 @@ const NodeGraph: React.FC<
           edges: LinkDatum[],
           nodes: NodeDatum[],
         };
+
+        states.current.startTime = Date.now();
+        setTimeUsage(-1);
+
         initNodePos(oldNodes, oldEdges, nodes, edges);
         // apply algorithms
-        switch (algorithm) {
-          case 'markov mobility':
+        if (algorithm.includes('markov mobility')) {
             markovMobility(oldNodes, oldEdges, nodes, edges);
-            break;
-          case 'degree mobility':
+        } else if (algorithm.includes('degree mobility')) {
             degreeMobility(oldNodes, oldEdges, nodes, edges);
-            break;
-          case 'age mobility':
+        } else if (algorithm.includes('age mobility')) {
             ageMobility(oldNodes, oldEdges, nodes, edges);
-            break;
-          case 'pinning weight mobility':
+        } else if (algorithm.includes('pinning weight mobility')) {
             pinningWeightMobility(oldNodes, oldEdges, nodes, edges);
-            break;
-          default:
-
         }
-        graph.current?.data(processedData);
 
-        startTime.current = Date.now();
-        setTimeUsage(-1);
+        graph.current?.data(processedData);
 
         graph.current?.render();
         applyRules();
@@ -360,7 +355,7 @@ const NodeGraph: React.FC<
             type="text"
             icon={<Download size={18}/>}
             onClick={() => {
-              graph.current?.downloadFullImage();
+              graph.current?.downloadFullImage(`${title}_${states.current.curTime}`);
             }}
           />
           <Button

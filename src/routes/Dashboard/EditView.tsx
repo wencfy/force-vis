@@ -144,6 +144,7 @@ const EditView: React.FC<{
                   </Form.Item>
                   <Form.Item name={['panelOptions', 'algorithm']} label='restrictions'>
                     <StringValuedCascader
+                      multiple
                       allowClear={false}
                       options={algorithms} />
                   </Form.Item>
