@@ -1,46 +1,40 @@
-# Getting Started with Create React App
+# force vis 动态图可视化系统
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
+这是一个用来展示算法和方便用户可视化分析的动态图可视化系统。该项目由 [Create React App](https://github.com/facebook/create-react-app) 脚本自动创建，使用了 [Redux](https://redux.js.org/) 和 [Redux Toolkit](https://redux-toolkit.js.org/) TS 模版.
 
-## Available Scripts
 
-In the project directory, you can run:
+## 快速开始
+
+如果您选择使用 `npm` 作为包管理工具，可运行以下指令安装项目。
+
+### `npm install`
+
+使用 `npm install` 安装所有的包依赖
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+在开发模式下运行应用程序。\
+打开 [http://localhost:3000](http://localhost:3000) 在浏览器中查看系统。\
+如果您进行编辑，页面将重新加载。\
+您还将在控制台中看到任何 lint 错误。
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+将用于生产的应用程序构建到 `build` 文件夹中。\
+它在生产模式下正确捆绑 React 并优化构建以获得最佳性能。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+构建被缩小并且文件名包含哈希值。\
+项目即可部署。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+查看 [deployment](https://facebook.github.io/create-react-app/docs/deployment) 获取更多信息。
 
-### `npm run eject`
+### `npm run deploy`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+将项目部署至服务端。
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 您也可以使用 `yarn` 做包管理器
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`yarn` 更快，也更加稳定
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+具体命令和 `npm` 类似，可从项目的 package.json 文件中查看相关命令。
