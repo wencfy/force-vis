@@ -86,6 +86,7 @@ function DataView<T extends ViewData>(
                 size="small"
                 icon={<Pageview size={18}/>}
                 onClick={() => navigator(record.url ?? '')}
+                disabled={storeName == 'datasource'}
               />
             }
             <Button
